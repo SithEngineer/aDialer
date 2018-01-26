@@ -1,0 +1,10 @@
+<resources>
+  <string name="app_name">Dialer</string>
+  <string name="menu_text_favorites">Favorites</string>
+  <string name="menu_text_history">History</string>
+  <string name="menu_text_contacts">Contacts</string>
+  <string name="list_item_favorite_contact_edit_image">Edit favorite contact</string>
+  <string name="list_item_history_contact_edit_image">Edit contact</string>
+  <string name="list_item_history_contact_favorite_image">Toggle favorite</string>
+  <string name="fragment_introduction_text_1">Welcome to Dialer.\nThis is your introduction tutorial.\n\nPress the next button.</string>
+</resources>
