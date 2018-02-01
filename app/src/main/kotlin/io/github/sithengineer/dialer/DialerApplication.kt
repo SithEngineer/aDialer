@@ -7,7 +7,7 @@ import com.facebook.stetho.Stetho
 import com.facebook.stetho.timber.StethoTree
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
-import io.github.sithengineer.dialer.dependencyinjection.DaggerAppComponent
+import io.github.sithengineer.dialer.abstraction.dependencyinjection.components.DaggerAppComponent
 import io.github.sithengineer.dialer.log.CrashReportTree
 import timber.log.Timber
 import javax.inject.Inject
@@ -22,16 +22,17 @@ class DialerApplication : Application(), HasActivityInjector {
   override fun onCreate() {
     super.onCreate()
 
+    if (BuildConfig.DEBUG) {
+      initializeStetho(applicationContext)
+      Timber.plant(StethoTree())
+    } else {
+      Timber.plant(CrashReportTree())
+    }
+
     DaggerAppComponent
         .builder()
         .create(this)
         .inject(this)
-
-    if (BuildConfig.DEBUG) {
-      initializeStetho(applicationContext)
-    } else {
-      Timber.plant(CrashReportTree())
-    }
   }
 
   private fun initializeStetho(context: Context) {
@@ -41,7 +42,5 @@ class DialerApplication : Application(), HasActivityInjector {
         .build()
 
     Stetho.initialize(initializer)
-
-    Timber.plant(StethoTree())
   }
 }

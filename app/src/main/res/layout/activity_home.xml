@@ -10,14 +10,14 @@
     >
 
   <FrameLayout
-      android:id="@+id/fragment_placeholder"
+      android:id="@+id/activity_home_fragment_placeholder"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_above="@+id/navigation"
+      android:layout_above="@+id/activity_home_navigation"
       />
 
   <android.support.design.widget.BottomNavigationView
-      android:id="@+id/navigation"
+      android:id="@+id/activity_home_navigation"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_alignParentBottom="true"

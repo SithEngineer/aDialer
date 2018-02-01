@@ -3,8 +3,8 @@ package io.github.sithengineer.dialer.introduction
 import android.app.Fragment
 import dagger.Binds
 import dagger.Module
-import io.github.sithengineer.dialer.dependencyinjection.BaseFragmentModule
-import io.github.sithengineer.dialer.scope.FragmentScope
+import io.github.sithengineer.dialer.abstraction.dependencyinjection.components.BaseFragmentModule
+import io.github.sithengineer.dialer.abstraction.dependencyinjection.scope.FragmentScope
 import javax.inject.Named
 
 @Module(includes = [(BaseFragmentModule::class)])

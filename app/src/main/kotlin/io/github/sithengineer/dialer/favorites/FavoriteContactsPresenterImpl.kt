@@ -1,8 +1,8 @@
 package io.github.sithengineer.dialer.favorites
 
 import android.os.Bundle
-import io.github.sithengineer.dialer.mvpabstractions.BasePresenter
-import io.github.sithengineer.dialer.scope.FragmentScope
+import io.github.sithengineer.dialer.abstraction.dependencyinjection.scope.FragmentScope
+import io.github.sithengineer.dialer.abstraction.mvp.BasePresenter
 import javax.inject.Inject
 
 @FragmentScope

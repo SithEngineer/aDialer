@@ -1,16 +1,34 @@
 package io.github.sithengineer.dialer.home
 
 import android.app.Activity
+import android.content.IntentFilter
 import dagger.Binds
 import dagger.Module
-import io.github.sithengineer.dialer.dependencyinjection.BaseActivityModule
-import io.github.sithengineer.dialer.scope.ActivityScope
+import dagger.Provides
+import io.github.sithengineer.dialer.abstraction.ContactsLoadedReceiver
+import io.github.sithengineer.dialer.abstraction.RxLocalBroadcastReceiver
+import io.github.sithengineer.dialer.abstraction.dependencyinjection.components.BaseActivityModule
+import io.github.sithengineer.dialer.abstraction.dependencyinjection.scope.ActivityScope
+import io.github.sithengineer.dialer.abstraction.dependencyinjection.scope.FragmentScope
+import io.reactivex.Completable
 
 @Module(includes = [(BaseActivityModule::class), (HomeFragmentProvider::class)])
 abstract class HomeActivityModule {
 
+  @Module
   companion object {
-    private const val SHOW_INTRO = "show_intro"
+    @Provides
+    @ActivityScope
+    @JvmStatic
+    fun provideContactsLoadedFilter() = IntentFilter(ContactsLoadedReceiver.ACTION)
+
+    @Provides
+    @ActivityScope
+    @JvmStatic
+    fun provideContactsLoadedCompletable(activity: Activity, filter: IntentFilter): Completable {
+      return RxLocalBroadcastReceiver.generateObservable(activity,
+          filter).flatMapCompletable { _ -> Completable.complete() }
+    }
   }
 
   @Binds
