@@ -79,7 +79,6 @@ class CallHistoryPresenterImpl @Inject constructor(
         getCallHistories
             .execute(request)
             .callHistories
-            .map { data -> data.sortedBy { entry -> entry.callHistory.timestamp } }
             .observeOn(viewScheduler)
             .subscribeOn(ioScheduler)
             .subscribe(

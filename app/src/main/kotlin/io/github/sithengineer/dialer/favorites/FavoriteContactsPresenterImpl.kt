@@ -84,7 +84,6 @@ class FavoriteContactsPresenterImpl @Inject constructor(
         getUsers
             .execute(request)
             .users
-            .map { data -> data.sortedBy { user -> user.name } }
             .observeOn(viewScheduler)
             .subscribeOn(ioScheduler)
             .subscribe(
