@@ -12,7 +12,7 @@ import io.reactivex.Single
 @Dao
 interface UserDao {
 
-  @Query("SELECT * FROM user")
+  @Query("SELECT * FROM user ORDER BY user.name")
   fun getAll(): Flowable<List<User>>
 
   @Query("SELECT * FROM user WHERE userId = :id")

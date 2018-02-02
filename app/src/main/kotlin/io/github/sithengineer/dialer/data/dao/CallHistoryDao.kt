@@ -10,7 +10,7 @@ import io.reactivex.Flowable
 @Dao
 interface CallHistoryDao {
 
-  @Query("SELECT * FROM call_history")
+  @Query("SELECT * FROM call_history ORDER BY call_history.timestamp")
   fun getAll(): Flowable<List<CallHistory>>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)

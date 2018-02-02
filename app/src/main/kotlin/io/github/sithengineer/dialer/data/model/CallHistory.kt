@@ -9,5 +9,5 @@ import java.util.UUID
 data class CallHistory(
     @PrimaryKey @ColumnInfo(name = "callId") var id: String = UUID.randomUUID().toString(),
     @ColumnInfo(name = "toUserId") var toUserId: String,
-    @ColumnInfo(name = "timestamp") var timestamp: Long
+    @ColumnInfo(name = "timestamp") var timestamp: Long = System.currentTimeMillis()
 )

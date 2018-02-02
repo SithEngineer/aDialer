@@ -1,4 +1,4 @@
-package io.github.sithengineer.dialer.allcontacts
+package io.github.sithengineer.dialer.callhistory
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -16,27 +16,33 @@ import io.github.sithengineer.dialer.data.model.User
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
-class AllContactsAdapter : RecyclerView.Adapter<AllContactsAdapter.ViewHolder>() {
+class CallHistoryAdapter : RecyclerView.Adapter<CallHistoryAdapter.ViewHolder>() {
 
   private val userFavoritePublisher: PublishSubject<User> = PublishSubject.create()
   private val userEditPublisher: PublishSubject<User> = PublishSubject.create()
   private val userCallPublisher: PublishSubject<User> = PublishSubject.create()
-  private val users = mutableListOf<User>()
+  private val callHistories = mutableListOf<CallHistoryViewModel>()
 
   override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
     val view = LayoutInflater.from(parent?.context).inflate(ViewHolder.LAYOUT_ID, parent, false)
     return ViewHolder(view, userFavoritePublisher, userEditPublisher, userCallPublisher)
   }
 
-  override fun getItemCount(): Int = users.size
+  override fun getItemCount(): Int = callHistories.size
 
   override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-    holder?.bind(users[position])
+    holder?.bind(callHistories[position])
   }
 
-  fun setUsers(users: List<User>) {
-    this.users.clear()
-    this.users.addAll(users)
+  fun addCallHistory(callHistory: CallHistoryViewModel) {
+    callHistories.add(callHistory)
+    //notifyItemInserted(callHistories.size)
+    notifyDataSetChanged()
+  }
+
+  fun setCallHistory(callHistories: List<CallHistoryViewModel>) {
+    this.callHistories.clear()
+    this.callHistories.addAll(callHistories)
     notifyDataSetChanged()
   }
 
@@ -52,22 +58,22 @@ class AllContactsAdapter : RecyclerView.Adapter<AllContactsAdapter.ViewHolder>()
   ) : BaseRecyclerViewHolder(view) {
 
     companion object {
-      const val LAYOUT_ID = R.layout.list_item_square_contact
+      const val LAYOUT_ID = R.layout.list_item_call_history_contact
     }
 
-    @BindView(R.id.list_item_favorite_contact_image)
+    @BindView(R.id.list_item_history_contact_image)
     lateinit var image: ImageView
 
-    @BindView(R.id.list_item_favorite_contact_name)
+    @BindView(R.id.list_item_history_contact_name)
     lateinit var name: TextView
 
-    @BindView(R.id.list_item_favorite_contact_number)
+    @BindView(R.id.list_item_history_contact_number)
     lateinit var number: TextView
 
-    @BindView(R.id.list_item_favorite_contact_edit)
+    @BindView(R.id.list_item_history_contact_edit)
     lateinit var edit: ImageView
 
-    @BindView(R.id.list_item_favorite_contact_favorite)
+    @BindView(R.id.list_item_history_contact_favorite)
     lateinit var favorite: ImageView
 
     init {
@@ -82,8 +88,8 @@ class AllContactsAdapter : RecyclerView.Adapter<AllContactsAdapter.ViewHolder>()
 
     private lateinit var user: User
 
-    fun bind(user: User) {
-      this.user = user
+    fun bind(callHistory: CallHistoryViewModel) {
+      this.user = callHistory.user
 
       name.text = user.name
       number.text = user.number
@@ -103,4 +109,5 @@ class AllContactsAdapter : RecyclerView.Adapter<AllContactsAdapter.ViewHolder>()
     }
 
   }
+
 }

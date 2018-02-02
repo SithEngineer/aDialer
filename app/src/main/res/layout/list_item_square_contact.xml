@@ -23,9 +23,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_margin="6dp"
         android:layout_toStartOf="@+id/list_item_favorite_contact_buttons"
         android:orientation="vertical"
-        android:layout_margin="6dp"
         >
       <ImageView
           android:id="@+id/list_item_favorite_contact_image"
@@ -74,6 +74,8 @@
           android:scaleType="centerCrop"
           android:src="@drawable/ic_mode_edit_white_24dp"
           android:tint="@color/accent"
+          android:visibility="gone"
+          tools:visibility="visible"
           />
 
       <ImageView

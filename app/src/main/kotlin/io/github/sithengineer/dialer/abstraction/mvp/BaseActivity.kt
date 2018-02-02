@@ -1,15 +1,15 @@
 package io.github.sithengineer.dialer.abstraction.mvp
 
 import android.app.DialogFragment
-import android.app.Fragment
 import android.os.Bundle
 import android.support.annotation.IdRes
+import android.support.v4.app.Fragment
 import butterknife.ButterKnife
 import butterknife.Unbinder
 import dagger.android.AndroidInjection
-import dagger.android.DaggerActivity
+import dagger.android.support.DaggerAppCompatActivity
 
-abstract class BaseActivity : DaggerActivity() {
+abstract class BaseActivity : DaggerAppCompatActivity() {
 
   private var viewUnbinder: Unbinder? = null
 
@@ -28,13 +28,13 @@ abstract class BaseActivity : DaggerActivity() {
   }
 
   protected fun addFragment(@IdRes containerViewId: Int, fragment: Fragment) {
-    fragmentManager.beginTransaction()
+    supportFragmentManager.beginTransaction()
         .add(containerViewId, fragment)
         .commit()
   }
 
   protected fun replaceFragment(@IdRes containerViewId: Int, fragment: Fragment) {
-    fragmentManager.beginTransaction()
+    supportFragmentManager.beginTransaction()
         .replace(containerViewId, fragment)
         .commit()
   }

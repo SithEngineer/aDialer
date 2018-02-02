@@ -1,4 +1,4 @@
-package io.github.sithengineer.dialer.allcontacts
+package io.github.sithengineer.dialer.favorites
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -16,7 +16,7 @@ import io.github.sithengineer.dialer.data.model.User
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
-class AllContactsAdapter : RecyclerView.Adapter<AllContactsAdapter.ViewHolder>() {
+class FavoriteContactsAdapter : RecyclerView.Adapter<FavoriteContactsAdapter.ViewHolder>() {
 
   private val userFavoritePublisher: PublishSubject<User> = PublishSubject.create()
   private val userEditPublisher: PublishSubject<User> = PublishSubject.create()
@@ -31,13 +31,19 @@ class AllContactsAdapter : RecyclerView.Adapter<AllContactsAdapter.ViewHolder>()
   override fun getItemCount(): Int = users.size
 
   override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-    holder?.bind(users[position])
+    holder?.setData(users[position])
   }
 
   fun setUsers(users: List<User>) {
     this.users.clear()
     this.users.addAll(users)
     notifyDataSetChanged()
+  }
+
+  fun removeUser(user: User) {
+    if (this.users.remove(user)) {
+      notifyDataSetChanged()
+    }
   }
 
   fun userFavoriteSelected(): Observable<User> = userFavoritePublisher
@@ -82,11 +88,11 @@ class AllContactsAdapter : RecyclerView.Adapter<AllContactsAdapter.ViewHolder>()
 
     private lateinit var user: User
 
-    fun bind(user: User) {
+    fun setData(user: User) {
       this.user = user
-
       name.text = user.name
       number.text = user.number
+
       setFavoriteIcon()
 
       if (user.thumbnailPath.isEmpty()) {
@@ -98,9 +104,8 @@ class AllContactsAdapter : RecyclerView.Adapter<AllContactsAdapter.ViewHolder>()
     }
 
     private fun setFavoriteIcon() {
-      val drawableId = if (user.isFavorite) R.drawable.ic_favorite_white_24dp else R.drawable.ic_favorite_border_white_24dp
+      val drawableId = if(user.isFavorite) R.drawable.ic_favorite_white_24dp else R.drawable.ic_favorite_border_white_24dp
       favorite.setImageResource(drawableId)
     }
-
   }
 }

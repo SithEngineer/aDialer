@@ -1,7 +1,6 @@
 package io.github.sithengineer.dialer.introduction
 
 import android.Manifest
-import android.app.Fragment
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -42,7 +41,7 @@ class IntroductionFragment : BaseViewFragment<IntroductionPresenter>(), Introduc
     return inflater.inflate(R.layout.fragment_introduction, container, false)
   }
 
-  override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     failedToLoadContactsSubject = PublishSubject.create()
   }
@@ -56,20 +55,21 @@ class IntroductionFragment : BaseViewFragment<IntroductionPresenter>(), Introduc
   }
 
   override fun syncContacts() {
-    val readContactsPermission = ActivityCompat.checkSelfPermission(activity,
+    val context = context!!
+    val readContactsPermission = ActivityCompat.checkSelfPermission(context,
         Manifest.permission.READ_CONTACTS)
-    val writeContactsPermission = ActivityCompat.checkSelfPermission(activity,
+    val writeContactsPermission = ActivityCompat.checkSelfPermission(context,
         Manifest.permission.READ_CONTACTS)
 
     if (readContactsPermission == writeContactsPermission && readContactsPermission == PackageManager.PERMISSION_GRANTED) {
-      readContacts(activity)
+      readContacts(context)
     } else {
       if (VERSION.SDK_INT >= VERSION_CODES.M) {
         requestPermissions(
             arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS),
             CONTACTS_REQUEST_CODE)
       } else {
-        ActivityCompat.requestPermissions(activity,
+        ActivityCompat.requestPermissions(activity!!,
             arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS),
             CONTACTS_REQUEST_CODE)
       }
@@ -93,7 +93,7 @@ class IntroductionFragment : BaseViewFragment<IntroductionPresenter>(), Introduc
           (grantResults[0] != PackageManager.PERMISSION_GRANTED && grantResults[1] != PackageManager.PERMISSION_GRANTED)) {
         failedToLoadContactsSubject.onNext(Any())
       } else {
-        readContacts(activity)
+        readContacts(context!!)
       }
     }
   }

@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.FrameLayout
 import butterknife.BindView
 import com.jakewharton.rxbinding2.support.design.widget.RxBottomNavigationView
+import com.jakewharton.rxbinding2.view.clicks
 import io.github.sithengineer.dialer.R
 import io.github.sithengineer.dialer.abstraction.mvp.BaseActivity
 import io.github.sithengineer.dialer.allcontacts.AllContactsFragment

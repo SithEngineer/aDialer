@@ -3,16 +3,18 @@ package io.github.sithengineer.dialer.abstraction.mvp
 import android.os.Bundle
 import butterknife.ButterKnife
 import butterknife.Unbinder
-import dagger.android.DaggerDialogFragment
+import dagger.android.support.DaggerAppCompatDialogFragment
 
-abstract class BaseFragment : DaggerDialogFragment() {
+abstract class BaseFragment : DaggerAppCompatDialogFragment() {
 
   private var viewUnbinder: Unbinder? = null
 
   override fun onViewStateRestored(savedInstanceState: Bundle?) {
     // occurs before onResume
     super.onViewStateRestored(savedInstanceState)
-    viewUnbinder = ButterKnife.bind(this, view)
+    view?.let {
+      viewUnbinder = ButterKnife.bind(this, it)
+    }
   }
 
   override fun onDestroyView() {

@@ -14,5 +14,17 @@ abstract class UseCaseModule {
     @JvmStatic
     fun getUsers(userRepository: UserRepository, filter: UserFilter) = GetUsers(userRepository,
         filter)
+
+    @Provides
+    @JvmStatic
+    fun getCallUser(userRepository: UserRepository) = CallUser(userRepository)
+
+    @Provides
+    @JvmStatic
+    fun getToggleFavoriteUser(userRepository: UserRepository) = ToggleFavoriteUser(userRepository)
+
+    @Provides
+    @JvmStatic
+    fun getCallHistories(userRepository: UserRepository) = GetCallHistories(userRepository)
   }
 }

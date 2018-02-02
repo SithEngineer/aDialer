@@ -1,6 +1,6 @@
 package io.github.sithengineer.dialer.allcontacts
 
-import android.app.Fragment
+import android.support.v4.app.Fragment
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

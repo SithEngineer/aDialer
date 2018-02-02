@@ -50,7 +50,7 @@ class ContactSyncService : DaggerIntentService("ContactSync_IntentService") {
       }
       cursor.close()
     }
-    Timber.v("Loaded ${contacts.size} contacts")
+    Timber.w("Loaded ${contacts.size} contacts")
     userRepository.insertOrUpdateUsers(*contacts.toTypedArray()).subscribe()
 
     // notify rest of the app that contacts where (asynchronously) loaded

@@ -1,6 +1,6 @@
 package io.github.sithengineer.dialer.introduction
 
-import android.app.Fragment
+import android.support.v4.app.Fragment
 import dagger.Binds
 import dagger.Module
 import io.github.sithengineer.dialer.abstraction.dependencyinjection.components.BaseFragmentModule
