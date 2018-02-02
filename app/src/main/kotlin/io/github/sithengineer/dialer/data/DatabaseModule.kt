@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.Provides
 import io.github.sithengineer.dialer.abstraction.dependencyinjection.scope.ApplicationScope
 import io.github.sithengineer.dialer.data.dao.CallHistoryDao
+import io.github.sithengineer.dialer.data.dao.ContactNumberDao
 import io.github.sithengineer.dialer.data.dao.UserDao
 import io.github.sithengineer.dialer.data.source.UserLocalRepository
 
@@ -35,9 +36,15 @@ abstract class DatabaseModule {
     @Provides
     @ApplicationScope
     @JvmStatic
+    fun provideContactNumberDao(
+        database: DialerDatabase): ContactNumberDao = database.getContactNumberDao()
+
+    @Provides
+    @ApplicationScope
+    @JvmStatic
     fun provideUserRepository(userDao: UserDao,
-        callHistoryDao: CallHistoryDao): UserRepository = UserLocalRepository(userDao,
-        callHistoryDao)
+        callHistoryDao: CallHistoryDao, contactNumberDao: ContactNumberDao): UserRepository =
+        UserLocalRepository(userDao, callHistoryDao, contactNumberDao)
   }
 
 }

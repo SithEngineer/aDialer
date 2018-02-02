@@ -2,18 +2,20 @@ package io.github.sithengineer.dialer.data.source
 
 import io.github.sithengineer.dialer.data.UserRepository
 import io.github.sithengineer.dialer.data.dao.CallHistoryDao
+import io.github.sithengineer.dialer.data.dao.ContactNumberDao
 import io.github.sithengineer.dialer.data.dao.UserDao
 import io.github.sithengineer.dialer.data.model.CallHistory
+import io.github.sithengineer.dialer.data.model.ContactNumber
 import io.github.sithengineer.dialer.data.model.User
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
-import timber.log.Timber
 import javax.inject.Inject
 
 class UserLocalRepository @Inject constructor(
     private val userDao: UserDao,
-    private val callHistoryDao: CallHistoryDao
+    private val callHistoryDao: CallHistoryDao,
+    private val contactNumberDao: ContactNumberDao
 ) : UserRepository {
 
   override fun getUsers(): Flowable<List<User>> = userDao.getAll()
@@ -29,4 +31,8 @@ class UserLocalRepository @Inject constructor(
   }
 
   override fun getCallHistories() = callHistoryDao.getAll()
+
+  override fun insertOrUpdateContactNumbers(vararg contactNumber: ContactNumber) = Completable.fromAction {
+    contactNumberDao.insertOrUpdate(*contactNumber)
+  }
 }

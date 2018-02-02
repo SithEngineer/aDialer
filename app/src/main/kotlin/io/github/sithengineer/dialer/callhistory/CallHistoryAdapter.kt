@@ -13,6 +13,7 @@ import com.jakewharton.rxbinding2.view.RxView
 import io.github.sithengineer.dialer.R
 import io.github.sithengineer.dialer.abstraction.mvp.BaseRecyclerViewHolder
 import io.github.sithengineer.dialer.data.model.User
+import io.github.sithengineer.dialer.viewmodel.CallHistoryViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
@@ -94,7 +95,6 @@ class CallHistoryAdapter : RecyclerView.Adapter<CallHistoryAdapter.ViewHolder>()
       isFavorite = user.isFavorite
 
       name.text = user.name
-      number.text = user.number
       setFavoriteIcon()
 
       if (user.thumbnailPath.isEmpty()) {

@@ -1,4 +1,4 @@
-package io.github.sithengineer.dialer.callhistory
+package io.github.sithengineer.dialer.viewmodel
 
 import io.github.sithengineer.dialer.data.model.CallHistory
 import io.github.sithengineer.dialer.data.model.User

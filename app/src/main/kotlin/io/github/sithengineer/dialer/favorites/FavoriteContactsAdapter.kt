@@ -94,7 +94,6 @@ class FavoriteContactsAdapter : RecyclerView.Adapter<FavoriteContactsAdapter.Vie
       isFavorite = user.isFavorite
 
       name.text = user.name
-      number.text = user.number
       setFavoriteIcon()
 
       if (user.thumbnailPath.isEmpty()) {

@@ -88,7 +88,6 @@ class AllContactsAdapter : RecyclerView.Adapter<AllContactsAdapter.ViewHolder>()
       isFavorite = user.isFavorite
 
       name.text = user.name
-      number.text = user.number
       setFavoriteIcon()
 
       if (user.thumbnailPath.isEmpty()) {

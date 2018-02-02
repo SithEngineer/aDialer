@@ -3,12 +3,14 @@ package io.github.sithengineer.dialer.data
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.RoomDatabase
 import io.github.sithengineer.dialer.data.dao.CallHistoryDao
+import io.github.sithengineer.dialer.data.dao.ContactNumberDao
 import io.github.sithengineer.dialer.data.dao.UserDao
 import io.github.sithengineer.dialer.data.model.CallHistory
+import io.github.sithengineer.dialer.data.model.ContactNumber
 import io.github.sithengineer.dialer.data.model.User
 
 @Database(
-    entities = [User::class, CallHistory::class],
+    entities = [User::class, CallHistory::class, ContactNumber::class],
     version = DialerDatabase.DB_VERSION,
     exportSchema = false
 )
@@ -20,4 +22,6 @@ abstract class DialerDatabase : RoomDatabase() {
   abstract fun getUserDao(): UserDao
 
   abstract fun getCallHistoryDao(): CallHistoryDao
+
+  abstract fun getContactNumberDao(): ContactNumberDao
 }

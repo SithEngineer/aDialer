@@ -1,7 +1,7 @@
 package io.github.sithengineer.dialer.usecase
 
 import io.github.sithengineer.dialer.abstraction.UseCase
-import io.github.sithengineer.dialer.callhistory.CallHistoryViewModel
+import io.github.sithengineer.dialer.viewmodel.CallHistoryViewModel
 import io.github.sithengineer.dialer.data.UserRepository
 import io.github.sithengineer.dialer.data.model.CallHistory
 import io.github.sithengineer.dialer.data.model.User
@@ -32,7 +32,8 @@ class GetCallHistories @Inject constructor(
 
     callHistories.forEach { entry ->
       callHistoriesViewModel.add(
-          CallHistoryViewModel(users.first { it -> it.id == entry.toUserId }, entry)
+          CallHistoryViewModel(
+              users.first { it -> it.id == entry.toUserId }, entry)
       )
     }
 

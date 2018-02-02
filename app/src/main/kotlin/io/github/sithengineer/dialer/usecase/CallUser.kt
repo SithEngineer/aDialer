@@ -1,7 +1,7 @@
 package io.github.sithengineer.dialer.usecase
 
 import io.github.sithengineer.dialer.abstraction.UseCase
-import io.github.sithengineer.dialer.callhistory.CallHistoryViewModel
+import io.github.sithengineer.dialer.viewmodel.CallHistoryViewModel
 import io.github.sithengineer.dialer.data.UserRepository
 import io.github.sithengineer.dialer.data.model.User
 import io.github.sithengineer.dialer.usecase.CallUser.Request
@@ -17,7 +17,10 @@ class CallUser @Inject constructor(
     return Response(
         userRepository
             .insertCallTo(request.user)
-            .map { callHistory -> CallHistoryViewModel(request.user, callHistory) }
+            .map { callHistory ->
+              CallHistoryViewModel(request.user,
+                  callHistory)
+            }
             .delay(2, SECONDS))
   }
 
