@@ -31,7 +31,7 @@ class FavoriteContactsAdapter : RecyclerView.Adapter<FavoriteContactsAdapter.Vie
   override fun getItemCount(): Int = users.size
 
   override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-    holder?.setData(users[position])
+    holder?.bind(users[position])
   }
 
   fun setUsers(users: List<User>) {
@@ -78,7 +78,7 @@ class FavoriteContactsAdapter : RecyclerView.Adapter<FavoriteContactsAdapter.Vie
 
     init {
       RxView.clicks(favorite).subscribe({ _ ->
-        user.isFavorite = !user.isFavorite
+        isFavorite = isFavorite.not()
         setFavoriteIcon()
         userFavoritePublisher.onNext(user)
       })
@@ -87,12 +87,14 @@ class FavoriteContactsAdapter : RecyclerView.Adapter<FavoriteContactsAdapter.Vie
     }
 
     private lateinit var user: User
+    private var isFavorite = false
 
-    fun setData(user: User) {
+    fun bind(user: User) {
       this.user = user
+      isFavorite = user.isFavorite
+
       name.text = user.name
       number.text = user.number
-
       setFavoriteIcon()
 
       if (user.thumbnailPath.isEmpty()) {
@@ -104,7 +106,7 @@ class FavoriteContactsAdapter : RecyclerView.Adapter<FavoriteContactsAdapter.Vie
     }
 
     private fun setFavoriteIcon() {
-      val drawableId = if(user.isFavorite) R.drawable.ic_favorite_white_24dp else R.drawable.ic_favorite_border_white_24dp
+      val drawableId = if (isFavorite) R.drawable.ic_favorite_white_24dp else R.drawable.ic_favorite_border_white_24dp
       favorite.setImageResource(drawableId)
     }
   }

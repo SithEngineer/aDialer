@@ -13,9 +13,8 @@ class ToggleFavoriteUser @Inject constructor(
 ) : UseCase<Request, Response> {
 
   override fun execute(request: Request): Response {
-    val user = request.user
-    user.isFavorite = !user.isFavorite
-    return Response(userRepository.insertOrUpdateUsers(user).toSingleDefault(user))
+    val userCopy = request.user.copy(isFavorite = request.user.isFavorite.not())
+    return Response(userRepository.insertOrUpdateUsers(userCopy).toSingleDefault(userCopy))
   }
 
   class Request(internal val user: User) : UseCase.RequestValues

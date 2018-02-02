@@ -79,6 +79,7 @@ class AllContactsPresenterImpl @Inject constructor(
         getUsers
             .execute(request)
             .users
+            .firstElement()
             .observeOn(viewScheduler)
             .subscribeOn(ioScheduler)
             .subscribe(

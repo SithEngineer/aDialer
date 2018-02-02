@@ -84,11 +84,12 @@ class FavoriteContactsPresenterImpl @Inject constructor(
         getUsers
             .execute(request)
             .users
+            .firstElement()
             .observeOn(viewScheduler)
             .subscribeOn(ioScheduler)
             .subscribe(
                 { users ->
-                  Timber.v("All contacts showing ${users.size} users")
+                  Timber.v("Favorites contacts showing ${users.size} users")
                   view.showUsers(users)
                 },
                 { err ->

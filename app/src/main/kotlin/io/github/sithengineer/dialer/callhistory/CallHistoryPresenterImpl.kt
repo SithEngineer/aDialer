@@ -83,6 +83,7 @@ class CallHistoryPresenterImpl @Inject constructor(
             .subscribeOn(ioScheduler)
             .subscribe(
                 { callHistories ->
+                  Timber.v("Call history showing ${callHistories.size} entries")
                   view.showCallHistory(callHistories)
                 },
                 { err ->

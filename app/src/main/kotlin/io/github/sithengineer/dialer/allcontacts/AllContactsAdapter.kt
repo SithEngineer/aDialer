@@ -72,7 +72,7 @@ class AllContactsAdapter : RecyclerView.Adapter<AllContactsAdapter.ViewHolder>()
 
     init {
       RxView.clicks(favorite).subscribe({ _ ->
-        user.isFavorite = !user.isFavorite
+        isFavorite = isFavorite.not()
         setFavoriteIcon()
         userFavoritePublisher.onNext(user)
       })
@@ -81,9 +81,11 @@ class AllContactsAdapter : RecyclerView.Adapter<AllContactsAdapter.ViewHolder>()
     }
 
     private lateinit var user: User
+    private var isFavorite = false
 
     fun bind(user: User) {
       this.user = user
+      isFavorite = user.isFavorite
 
       name.text = user.name
       number.text = user.number
@@ -98,7 +100,7 @@ class AllContactsAdapter : RecyclerView.Adapter<AllContactsAdapter.ViewHolder>()
     }
 
     private fun setFavoriteIcon() {
-      val drawableId = if (user.isFavorite) R.drawable.ic_favorite_white_24dp else R.drawable.ic_favorite_border_white_24dp
+      val drawableId = if (isFavorite) R.drawable.ic_favorite_white_24dp else R.drawable.ic_favorite_border_white_24dp
       favorite.setImageResource(drawableId)
     }
 

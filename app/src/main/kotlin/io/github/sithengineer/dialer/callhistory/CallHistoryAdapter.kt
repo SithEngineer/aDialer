@@ -78,7 +78,7 @@ class CallHistoryAdapter : RecyclerView.Adapter<CallHistoryAdapter.ViewHolder>()
 
     init {
       RxView.clicks(favorite).subscribe({ _ ->
-        user.isFavorite = !user.isFavorite
+        isFavorite = isFavorite.not()
         setFavoriteIcon()
         userFavoritePublisher.onNext(user)
       })
@@ -87,9 +87,11 @@ class CallHistoryAdapter : RecyclerView.Adapter<CallHistoryAdapter.ViewHolder>()
     }
 
     private lateinit var user: User
+    private var isFavorite = false
 
     fun bind(callHistory: CallHistoryViewModel) {
       this.user = callHistory.user
+      isFavorite = user.isFavorite
 
       name.text = user.name
       number.text = user.number
@@ -104,7 +106,7 @@ class CallHistoryAdapter : RecyclerView.Adapter<CallHistoryAdapter.ViewHolder>()
     }
 
     private fun setFavoriteIcon() {
-      val drawableId = if (user.isFavorite) R.drawable.ic_favorite_white_24dp else R.drawable.ic_favorite_border_white_24dp
+      val drawableId = if (isFavorite) R.drawable.ic_favorite_white_24dp else R.drawable.ic_favorite_border_white_24dp
       favorite.setImageResource(drawableId)
     }
 
