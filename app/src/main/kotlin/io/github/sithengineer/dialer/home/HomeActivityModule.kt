@@ -9,7 +9,6 @@ import io.github.sithengineer.dialer.abstraction.ContactsLoadedReceiver
 import io.github.sithengineer.dialer.abstraction.RxLocalBroadcastReceiver
 import io.github.sithengineer.dialer.abstraction.dependencyinjection.components.BaseActivityModule
 import io.github.sithengineer.dialer.abstraction.dependencyinjection.scope.ActivityScope
-import io.github.sithengineer.dialer.background.ContactSyncServiceProvider
 import io.reactivex.Observable
 
 @Module(includes = [(BaseActivityModule::class), (HomeFragmentProvider::class)])

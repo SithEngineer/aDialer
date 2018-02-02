@@ -10,6 +10,7 @@ data class User(
     @PrimaryKey @ColumnInfo(name = "userId") var id: String = UUID.randomUUID().toString(),
     @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "number") var number: String,
+    @ColumnInfo(name = "lookup_key") var lookupKey: String,
     @ColumnInfo(name = "thumbnail_path") var thumbnailPath: String,
     @ColumnInfo(name = "favorite") var isFavorite: Boolean = false
 )

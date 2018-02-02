@@ -42,7 +42,7 @@ class HomeActivity : BaseActivity(), HomeView {
             R.id.navigation_history -> {
               showCallHistoryView()
             }
-            R.id.navigation_contacts -> {
+            R.id.navigation_all_contacts -> {
               showAllContactsView()
             }
           }
@@ -74,7 +74,7 @@ class HomeActivity : BaseActivity(), HomeView {
   }
 
   override fun selectAllContacts() {
-    navigation.selectedItemId = R.id.navigation_contacts
+    navigation.selectedItemId = R.id.navigation_all_contacts
   }
 
   private fun showAllContactsView() {
@@ -90,7 +90,7 @@ class HomeActivity : BaseActivity(), HomeView {
   }
 
   override fun selectFavoriteContacts() {
-    navigation.selectedItemId = R.id.navigation_history
+    navigation.selectedItemId = R.id.navigation_favorites
   }
 
   private fun showFavoriteContactsView() {

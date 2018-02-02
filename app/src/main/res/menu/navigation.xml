@@ -7,7 +7,7 @@
       android:title="@string/menu_text_history"
       app:showAsAction="ifRoom"/>
   <item
-      android:id="@+id/navigation_contacts"
+      android:id="@+id/navigation_all_contacts"
       android:enabled="true"
       android:icon="@drawable/ic_list_white_24dp"
       android:title="@string/menu_text_contacts"

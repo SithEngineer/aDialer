@@ -1,4 +1,4 @@
-package io.github.sithengineer.dialer.log
+package io.github.sithengineer.dialer.util
 
 import timber.log.Timber
 

@@ -1,12 +1,10 @@
-package io.github.sithengineer.dialer.abstraction.dependencyinjection.components
+package io.github.sithengineer.dialer.data
 
 import android.app.Application
 import android.arch.persistence.room.Room
 import dagger.Module
 import dagger.Provides
 import io.github.sithengineer.dialer.abstraction.dependencyinjection.scope.ApplicationScope
-import io.github.sithengineer.dialer.data.DialerDatabase
-import io.github.sithengineer.dialer.data.UserRepository
 import io.github.sithengineer.dialer.data.dao.CallHistoryDao
 import io.github.sithengineer.dialer.data.dao.UserDao
 import io.github.sithengineer.dialer.data.source.UserLocalRepository

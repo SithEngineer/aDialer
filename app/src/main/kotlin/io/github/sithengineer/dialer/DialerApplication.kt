@@ -5,7 +5,7 @@ import com.facebook.stetho.Stetho
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import io.github.sithengineer.dialer.abstraction.dependencyinjection.components.DaggerAppComponent
-import io.github.sithengineer.dialer.log.CrashReportTree
+import io.github.sithengineer.dialer.util.CrashReportTree
 import timber.log.Timber
 
 class DialerApplication : DaggerApplication() {

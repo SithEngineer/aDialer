@@ -12,13 +12,15 @@ import io.github.sithengineer.dialer.DialerApplication
 import io.github.sithengineer.dialer.abstraction.dependencyinjection.scope.ActivityScope
 import io.github.sithengineer.dialer.abstraction.dependencyinjection.scope.ApplicationScope
 import io.github.sithengineer.dialer.background.ContactSyncServiceProvider
+import io.github.sithengineer.dialer.data.DatabaseModule
 import io.github.sithengineer.dialer.home.HomeActivity
 import io.github.sithengineer.dialer.home.HomeActivityModule
+import io.github.sithengineer.dialer.util.ScreenMath
 import io.reactivex.disposables.CompositeDisposable
 
 @Module(includes = [
   (AndroidInjectionModule::class), (SchedulersModule::class), (DatabaseModule::class),
-  (ContactSyncServiceProvider::class)
+  (ContactSyncServiceProvider::class)//, (UseCaseModule::class)
 ])
 abstract class AppModule {
 
@@ -36,6 +38,10 @@ abstract class AppModule {
     @Provides
     @JvmStatic
     fun provideCompositeDisposable() = CompositeDisposable()
+
+    @Provides
+    @JvmStatic
+    fun provideScreenMath() = ScreenMath()
   }
 
   @Binds

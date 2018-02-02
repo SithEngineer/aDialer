@@ -1,7 +1,6 @@
 package io.github.sithengineer.dialer.background
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.provider.ContactsContract
 import android.provider.ContactsContract.Contacts
 import android.support.v4.content.LocalBroadcastManager
@@ -38,23 +37,23 @@ class ContactSyncService : DaggerIntentService("ContactSync_IntentService") {
 
     if (cursor != null && cursor.moveToFirst()) {
       while (cursor.moveToNext()) {
-        if (cursor.getInt(CONTACT_HAS_PHONE_NUMBER_INDEX) == 1) {
-          contacts.add(
-              User(
-                  name = cursor.getString(CONTACT_NAME_INDEX),
-                  number = "",
-                  thumbnailPath = if(cursor.isNull(CONTACT_PHOTO_INDEX)) "" else cursor.getString(CONTACT_PHOTO_INDEX),
-                  isFavorite = false)
-          )
-        }
+        contacts.add(
+            User(
+                id = cursor.getString(CONTACT_ID_INDEX),
+                name = cursor.getString(CONTACT_NAME_INDEX),
+                number = "",
+                lookupKey = cursor.getString(CONTACT_LOOKUP_KEY_INDEX),
+                thumbnailPath = if (cursor.isNull(CONTACT_PHOTO_INDEX)) "" else cursor.getString(
+                    CONTACT_PHOTO_INDEX),
+                isFavorite = false)
+        )
       }
       cursor.close()
     }
+    Timber.v("Loaded ${contacts.size} contacts")
+    userRepository.insertOrUpdateUsers(*contacts.toTypedArray()).subscribe()
 
-    Timber.i("Loaded ${contacts.size} contacts")
-
-    userRepository.insertOrUpdateUsers(*contacts.toTypedArray())
-
+    // notify rest of the app that contacts where (asynchronously) loaded
     val contactsLoadedIntent = Intent(ContactsLoadedReceiver.ACTION)
     LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(contactsLoadedIntent)
   }
