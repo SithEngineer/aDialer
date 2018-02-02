@@ -8,5 +8,6 @@
   <string name="list_item_history_contact_favorite_image">Toggle favorite</string>
   <string name="fragment_introduction_text_1">Welcome to Dialer.\nThis is your introduction tutorial.\n\nPress the next button.</string>
   <string name="fragment_introduction_text_2">I need to ask a permission to read your contacts so this app works properly.\n\nWhen you feel ready to continue press the next button.</string>
+  <string name="fragment_introduction_text_3">Loading contacts.\n\nPlease wait.</string>
   <string name="fragment_introduction_text_failure">Failed to load contacts.\n\nPress the next button again when you feel ready for a new attempt.</string>
 </resources>

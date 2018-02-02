@@ -1,9 +1,12 @@
 package io.github.sithengineer.dialer.introduction
 
 import android.Manifest
+import android.app.Fragment
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.ActivityCompat
@@ -19,7 +22,6 @@ import io.github.sithengineer.dialer.abstraction.mvp.BaseViewFragment
 import io.github.sithengineer.dialer.background.ContactSyncService
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class IntroductionFragment : BaseViewFragment<IntroductionPresenter>(), IntroductionView {
@@ -62,9 +64,15 @@ class IntroductionFragment : BaseViewFragment<IntroductionPresenter>(), Introduc
     if (readContactsPermission == writeContactsPermission && readContactsPermission == PackageManager.PERMISSION_GRANTED) {
       readContacts(activity)
     } else {
-      ActivityCompat.requestPermissions(activity,
-          arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS),
-          CONTACTS_REQUEST_CODE)
+      if (VERSION.SDK_INT >= VERSION_CODES.M) {
+        requestPermissions(
+            arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS),
+            CONTACTS_REQUEST_CODE)
+      } else {
+        ActivityCompat.requestPermissions(activity,
+            arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS),
+            CONTACTS_REQUEST_CODE)
+      }
     }
   }
 
@@ -83,7 +91,7 @@ class IntroductionFragment : BaseViewFragment<IntroductionPresenter>(), Introduc
     if (requestCode == CONTACTS_REQUEST_CODE) {
       if (grantResults.isEmpty() ||
           (grantResults[0] != PackageManager.PERMISSION_GRANTED && grantResults[1] != PackageManager.PERMISSION_GRANTED)) {
-        Timber.e("user did NOT give permission to read contacts.")
+        failedToLoadContactsSubject.onNext(Any())
       } else {
         readContacts(activity)
       }

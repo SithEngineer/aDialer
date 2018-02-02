@@ -2,7 +2,6 @@ package io.github.sithengineer.dialer.home
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
-import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
 import butterknife.BindView
@@ -14,7 +13,6 @@ import io.github.sithengineer.dialer.callhistory.CallHistoryFragment
 import io.github.sithengineer.dialer.favorites.FavoriteContactsFragment
 import io.github.sithengineer.dialer.introduction.IntroductionFragment
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class HomeActivity : BaseActivity(), HomeView {
@@ -26,51 +24,39 @@ class HomeActivity : BaseActivity(), HomeView {
   lateinit var placeholder: FrameLayout
 
   @Inject
-  lateinit var presenter: HomePresenterImpl
+  lateinit var disposables: CompositeDisposable
 
-  private val disposables = CompositeDisposable()
-  private val favoritesSelectionPublisher = PublishSubject.create<MenuItem>()
-  private val historySelectionPublisher = PublishSubject.create<MenuItem>()
-  private val allContactsSelectionPublisher = PublishSubject.create<MenuItem>()
+  @Inject
+  lateinit var presenter: HomePresenter
+
+  override fun getContentViewId(): Int = R.layout.activity_home
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_home)
-  }
-
-  override fun onStart() {
-    super.onStart()
     disposables.add(
         RxBottomNavigationView.itemSelections(navigation).subscribe({ item ->
           when (item.itemId) {
             R.id.navigation_favorites -> {
-              showFavoriteContacts()
-              favoritesSelectionPublisher.onNext(item)
+              showFavoriteContactsView()
             }
             R.id.navigation_history -> {
-              showCallHistory()
-              historySelectionPublisher.onNext(item)
+              showCallHistoryView()
             }
             R.id.navigation_contacts -> {
-              showAllContacts()
-              allContactsSelectionPublisher.onNext(item)
+              showAllContactsView()
             }
           }
         })
     )
+    presenter.start(savedInstanceState)
   }
 
-  override fun onStop() {
+  override fun onDestroy() {
+    presenter.stop()
     if (!disposables.isDisposed) {
       disposables.dispose()
     }
-
-    super.onStop()
-  }
-
-  override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-    super.onRestoreInstanceState(savedInstanceState)
-    presenter.start(savedInstanceState)
+    super.onDestroy()
   }
 
   override fun onResume() {
@@ -83,37 +69,43 @@ class HomeActivity : BaseActivity(), HomeView {
     super.onPause()
   }
 
-  override fun onDestroy() {
-    presenter.stop()
-    super.onDestroy()
-  }
-
   override fun showIntroduction() {
-    addFragment(placeholder.id, IntroductionFragment.newInstance())
+    replaceFragment(placeholder.id, IntroductionFragment.newInstance())
   }
 
-  override fun showAllContacts() {
-    addFragment(placeholder.id, AllContactsFragment.newInstance())
+  override fun selectAllContacts() {
+    navigation.selectedItemId = R.id.navigation_contacts
   }
 
-  override fun showCallHistory() {
-    addFragment(placeholder.id, CallHistoryFragment.newInstance())
+  private fun showAllContactsView() {
+    replaceFragment(placeholder.id, AllContactsFragment.newInstance())
   }
 
-  override fun showFavoriteContacts() {
-    addFragment(placeholder.id, FavoriteContactsFragment.newInstance())
+  override fun selectCallHistory() {
+    navigation.selectedItemId = R.id.navigation_history
+  }
+
+  private fun showCallHistoryView() {
+    replaceFragment(placeholder.id, CallHistoryFragment.newInstance())
+  }
+
+  override fun selectFavoriteContacts() {
+    navigation.selectedItemId = R.id.navigation_history
+  }
+
+  private fun showFavoriteContactsView() {
+    replaceFragment(placeholder.id, FavoriteContactsFragment.newInstance())
   }
 
   override fun hideBottomNavigationBar() {
     if (navigation.visibility != View.GONE) {
-      navigation.animate().yBy(20F).withEndAction { navigation.visibility = View.GONE }
+      navigation.visibility = View.GONE
     }
   }
 
   override fun showBottomNavigationBar() {
     if (navigation.visibility != View.VISIBLE) {
       navigation.visibility = View.VISIBLE
-      navigation.animate().yBy(-20F)
     }
   }
 }

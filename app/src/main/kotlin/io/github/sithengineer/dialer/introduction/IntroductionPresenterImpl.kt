@@ -6,6 +6,7 @@ import io.github.sithengineer.dialer.abstraction.dependencyinjection.scope.Fragm
 import io.github.sithengineer.dialer.abstraction.mvp.BasePresenter
 import io.github.sithengineer.dialer.introduction.IntroductionStep.FAILURE
 import io.github.sithengineer.dialer.introduction.IntroductionStep.ONE
+import io.github.sithengineer.dialer.introduction.IntroductionStep.THREE
 import io.github.sithengineer.dialer.introduction.IntroductionStep.TWO
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
@@ -16,9 +17,9 @@ import javax.inject.Named
 @FragmentScope
 class IntroductionPresenterImpl @Inject constructor(view: IntroductionView,
     private val disposables: CompositeDisposable,
-    @Named(SchedulersModule.VIEW) private val viewScheduler: Scheduler,
-    @Named(SchedulersModule.IO) private val ioScheduler: Scheduler) :
-    BasePresenter<IntroductionView>(view), IntroductionPresenter {
+    @Named(SchedulersModule.VIEW) private val viewScheduler: Scheduler
+    //,@Named(SchedulersModule.IO) private val ioScheduler: Scheduler
+) : BasePresenter<IntroductionView>(view), IntroductionPresenter {
 
   private lateinit var currentStep: IntroductionStep
 
@@ -31,20 +32,31 @@ class IntroductionPresenterImpl @Inject constructor(view: IntroductionView,
     view.showStep(currentStep)
 
     disposables.add(
-        view.nextButtonSelected().subscribe({ _ ->
-          when (currentStep) {
-            ONE -> {
-              currentStep = TWO
-              view.showStep(currentStep)
-            }
-            TWO,
-            FAILURE -> {
-              view.syncContacts()
-              view.hideButton()
-              view.showLoading()
-            }
-          }
-        }, { err -> Timber.e(err) })
+        view.nextButtonSelected()
+            .observeOn(viewScheduler)
+            .subscribe({ _ ->
+              when (currentStep) {
+                ONE -> {
+                  currentStep = TWO
+                  view.showStep(currentStep)
+                }
+                TWO -> {
+                  currentStep = THREE
+                  view.showStep(currentStep)
+                  view.syncContacts()
+                  view.hideButton()
+                  view.showLoading()
+                }
+                FAILURE -> {
+                  view.syncContacts()
+                  view.hideButton()
+                  view.showLoading()
+                }
+                THREE -> {
+                  // do nothing
+                }
+              }
+            }, { err -> Timber.e(err) })
     )
 
     disposables.add(

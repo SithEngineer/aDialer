@@ -9,8 +9,8 @@ import io.github.sithengineer.dialer.abstraction.ContactsLoadedReceiver
 import io.github.sithengineer.dialer.abstraction.RxLocalBroadcastReceiver
 import io.github.sithengineer.dialer.abstraction.dependencyinjection.components.BaseActivityModule
 import io.github.sithengineer.dialer.abstraction.dependencyinjection.scope.ActivityScope
-import io.github.sithengineer.dialer.abstraction.dependencyinjection.scope.FragmentScope
-import io.reactivex.Completable
+import io.github.sithengineer.dialer.background.ContactSyncServiceProvider
+import io.reactivex.Observable
 
 @Module(includes = [(BaseActivityModule::class), (HomeFragmentProvider::class)])
 abstract class HomeActivityModule {
@@ -25,9 +25,10 @@ abstract class HomeActivityModule {
     @Provides
     @ActivityScope
     @JvmStatic
-    fun provideContactsLoadedCompletable(activity: Activity, filter: IntentFilter): Completable {
+    fun provideContactsLoadedCompletable(activity: Activity,
+        filter: IntentFilter): Observable<Any> {
       return RxLocalBroadcastReceiver.generateObservable(activity,
-          filter).flatMapCompletable { _ -> Completable.complete() }
+          filter).map { _ -> Any() }
     }
   }
 

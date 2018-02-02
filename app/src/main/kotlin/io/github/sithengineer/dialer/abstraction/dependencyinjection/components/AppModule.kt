@@ -11,11 +11,15 @@ import dagger.android.ContributesAndroidInjector
 import io.github.sithengineer.dialer.DialerApplication
 import io.github.sithengineer.dialer.abstraction.dependencyinjection.scope.ActivityScope
 import io.github.sithengineer.dialer.abstraction.dependencyinjection.scope.ApplicationScope
+import io.github.sithengineer.dialer.background.ContactSyncServiceProvider
 import io.github.sithengineer.dialer.home.HomeActivity
 import io.github.sithengineer.dialer.home.HomeActivityModule
 import io.reactivex.disposables.CompositeDisposable
 
-@Module(includes = [(AndroidInjectionModule::class), (SchedulersModule::class)])
+@Module(includes = [
+  (AndroidInjectionModule::class), (SchedulersModule::class), (DatabaseModule::class),
+  (ContactSyncServiceProvider::class)
+])
 abstract class AppModule {
 
   @Module
@@ -41,4 +45,5 @@ abstract class AppModule {
   @ActivityScope
   @ContributesAndroidInjector(modules = [(HomeActivityModule::class)])
   internal abstract fun mainActivityInjector(): HomeActivity
+
 }

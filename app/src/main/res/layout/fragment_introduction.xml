@@ -11,6 +11,8 @@
       android:layout_width="match_parent"
       android:layout_height="12dp"
       android:layout_alignParentBottom="true"
+      android:indeterminate="true"
+      android:indeterminateTint="@color/primary_dark"
       android:visibility="gone"
       tools:visibility="visible"
       style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
@@ -19,11 +21,16 @@
   <TextView
       android:id="@+id/fragment_introduction_text"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="match_parent"
       android:layout_centerInParent="true"
-      android:layout_margin="44dp"
+      android:layout_marginBottom="140dp"
+      android:layout_marginEnd="44dp"
+      android:layout_marginStart="44dp"
+      android:gravity="center"
+      android:textAlignment="viewStart"
       android:textSize="@dimen/fragment_introduction_text_size"
-      tools:text="@string/fragment_introduction_text_1"
+      tools:ignore="RtlCompat"
+      tools:text="@string/fragment_introduction_text_2"
       />
 
   <android.support.design.widget.FloatingActionButton

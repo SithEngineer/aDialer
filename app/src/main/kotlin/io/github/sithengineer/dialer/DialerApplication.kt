@@ -1,30 +1,26 @@
 package io.github.sithengineer.dialer
 
-import android.app.Activity
-import android.app.Application
 import android.content.Context
 import com.facebook.stetho.Stetho
-import com.facebook.stetho.timber.StethoTree
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
+import dagger.android.AndroidInjector
+import dagger.android.DaggerApplication
 import io.github.sithengineer.dialer.abstraction.dependencyinjection.components.DaggerAppComponent
 import io.github.sithengineer.dialer.log.CrashReportTree
 import timber.log.Timber
-import javax.inject.Inject
 
-class DialerApplication : Application(), HasActivityInjector {
+class DialerApplication : DaggerApplication() {
 
-  @Inject
-  lateinit var activityInjector: DispatchingAndroidInjector<Activity>
-
-  override fun activityInjector() = activityInjector
+  override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+    return DaggerAppComponent.builder().create(this)
+  }
 
   override fun onCreate() {
     super.onCreate()
 
     if (BuildConfig.DEBUG) {
-      initializeStetho(applicationContext)
-      Timber.plant(StethoTree())
+      //initializeStetho(applicationContext)
+      //Timber.plant(StethoTree())
+      Timber.plant(Timber.DebugTree())
     } else {
       Timber.plant(CrashReportTree())
     }

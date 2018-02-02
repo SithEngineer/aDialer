@@ -7,5 +7,6 @@ enum class IntroductionStep(
 ) {
   ONE(R.string.fragment_introduction_text_1),
   TWO(R.string.fragment_introduction_text_2),
+  THREE(R.string.fragment_introduction_text_3),
   FAILURE(R.string.fragment_introduction_text_failure)
 }

@@ -1,6 +1,5 @@
 package io.github.sithengineer.dialer.abstraction.mvp
 
-import android.app.Activity
 import android.app.DialogFragment
 import android.app.Fragment
 import android.os.Bundle
@@ -8,37 +7,35 @@ import android.support.annotation.IdRes
 import butterknife.ButterKnife
 import butterknife.Unbinder
 import dagger.android.AndroidInjection
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasFragmentInjector
-import javax.inject.Inject
+import dagger.android.DaggerActivity
 
-abstract class BaseActivity : Activity(), HasFragmentInjector {
+abstract class BaseActivity : DaggerActivity() {
 
   private var viewUnbinder: Unbinder? = null
-
-  @Inject
-  lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
-
-  override fun fragmentInjector() = fragmentInjector
 
   override fun onCreate(savedInstanceState: Bundle?) {
     AndroidInjection.inject(this)
     super.onCreate(savedInstanceState)
-  }
-
-  override fun onStart() {
-    super.onStart()
+    setContentView(getContentViewId())
     viewUnbinder = ButterKnife.bind(this)
   }
 
-  override fun onStop() {
+  abstract fun getContentViewId(): Int
+
+  override fun onDestroy() {
     viewUnbinder?.unbind()
-    super.onStop()
+    super.onDestroy()
   }
 
   protected fun addFragment(@IdRes containerViewId: Int, fragment: Fragment) {
     fragmentManager.beginTransaction()
         .add(containerViewId, fragment)
+        .commit()
+  }
+
+  protected fun replaceFragment(@IdRes containerViewId: Int, fragment: Fragment) {
+    fragmentManager.beginTransaction()
+        .replace(containerViewId, fragment)
         .commit()
   }
 

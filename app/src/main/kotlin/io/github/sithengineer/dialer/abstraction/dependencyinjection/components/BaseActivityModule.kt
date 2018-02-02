@@ -6,6 +6,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import io.github.sithengineer.dialer.abstraction.dependencyinjection.scope.ActivityScope
+import io.github.sithengineer.dialer.abstraction.dependencyinjection.scope.ApplicationScope
+import io.github.sithengineer.dialer.background.ContactSyncService
 import io.reactivex.disposables.CompositeDisposable
 
 @Module

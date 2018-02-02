@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import io.github.sithengineer.dialer.abstraction.dependencyinjection.components.SchedulersModule
 import io.github.sithengineer.dialer.abstraction.mvp.BasePresenter
-import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
@@ -14,7 +14,7 @@ class HomePresenterImpl @Inject constructor(
     view: HomeView,
     private val preferences: SharedPreferences,
     private val disposables: CompositeDisposable,
-    private val contactsLoaded: Completable,
+    private val contactsLoaded: Observable<Any>,
     @Named(SchedulersModule.VIEW) private val viewScheduler: Scheduler
 ) : BasePresenter<HomeView>(view),
     HomePresenter {
@@ -24,34 +24,25 @@ class HomePresenterImpl @Inject constructor(
   }
 
   override fun start(state: Bundle?) {
+    if (preferences.getBoolean(SHOW_INTRODUCTION, true)) {
+      view.showIntroduction()
+      view.hideBottomNavigationBar()
+    } else {
+      view.showBottomNavigationBar()
+      view.selectFavoriteContacts()
+    }
+
     disposables.add(
         contactsLoaded
             .observeOn(viewScheduler)
             .subscribe(
-                {
+                { _ ->
                   preferences.edit().putBoolean(SHOW_INTRODUCTION, false).apply()
                   view.showBottomNavigationBar()
-                  view.showFavoriteContacts()
+                  view.selectAllContacts()
                 }
             )
     )
-  }
-
-  override fun resume() {
-    if (preferences.getBoolean(SHOW_INTRODUCTION, true)) {
-      view.showIntroduction()
-      view.hideBottomNavigationBar()
-      preferences.edit().putBoolean(SHOW_INTRODUCTION, false).apply()
-    } else {
-      view.showBottomNavigationBar()
-      view.showFavoriteContacts()
-    }
-  }
-
-  override fun pause() {}
-
-  override fun saveState(): Bundle? {
-    return null
   }
 
   override fun stop() {
