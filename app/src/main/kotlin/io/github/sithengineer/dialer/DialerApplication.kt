@@ -7,6 +7,9 @@ import dagger.android.DaggerApplication
 import io.github.sithengineer.dialer.abstraction.dependencyinjection.components.DaggerAppComponent
 import io.github.sithengineer.dialer.util.CrashReportTree
 import timber.log.Timber
+import android.os.StrictMode
+
+
 
 class DialerApplication : DaggerApplication() {
 
@@ -21,6 +24,7 @@ class DialerApplication : DaggerApplication() {
       //initializeStetho(applicationContext)
       //Timber.plant(StethoTree())
       Timber.plant(Timber.DebugTree())
+      enableStrictMode()
     } else {
       Timber.plant(CrashReportTree())
     }
@@ -38,5 +42,21 @@ class DialerApplication : DaggerApplication() {
         .build()
 
     Stetho.initialize(initializer)
+  }
+
+  private fun enableStrictMode() {
+    StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder()
+        .detectDiskReads()
+        .detectDiskWrites()
+        .detectNetwork()
+        .penaltyLog()
+        .build())
+
+    StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder()
+        .detectLeakedSqlLiteObjects()
+        .detectLeakedClosableObjects()
+        .penaltyLog()
+        .penaltyDeath()
+        .build())
   }
 }

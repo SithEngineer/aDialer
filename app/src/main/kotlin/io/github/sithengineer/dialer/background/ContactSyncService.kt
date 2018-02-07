@@ -11,7 +11,6 @@ import io.github.sithengineer.dialer.data.UserRepository
 import io.github.sithengineer.dialer.data.model.ContactNumber
 import io.github.sithengineer.dialer.data.model.User
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
-import io.michaelrocks.libphonenumber.android.PhoneNumberUtil.PhoneNumberType.VOIP
 import timber.log.Timber
 import java.util.Locale
 import javax.inject.Inject
@@ -62,10 +61,10 @@ class ContactSyncService : DaggerIntentService("ContactSync_IntentService") {
           val phoneNumber = phones.getString(phones.getColumnIndex(Phone.NUMBER))
           val parsedPhoneNumber = phoneNumberUtil.parse(phoneNumber, country)
 
-          if (phoneNumberUtil.getNumberType(parsedPhoneNumber) == VOIP)
-            userPhones.add(
-                ContactNumber(userId = user.id, number = phoneNumber)
-            )
+          userPhones.add(
+              ContactNumber(userId = user.id, number = phoneNumber,
+                  numberType = phoneNumberUtil.getNumberType(parsedPhoneNumber).name)
+          )
         }
         phones.close()
 
@@ -76,7 +75,7 @@ class ContactSyncService : DaggerIntentService("ContactSync_IntentService") {
       }
       cursor.close()
     }
-    Timber.w("Loaded ${contacts.size} contacts and ${contactNumbers.size} VoIP numbers")
+    Timber.w("Loaded ${contacts.size} contacts and ${contactNumbers.size} numbers")
     userRepository.insertOrUpdateUsers(*contacts.toTypedArray()).subscribe()
     userRepository.insertOrUpdateContactNumbers(*contactNumbers.toTypedArray()).subscribe()
 
