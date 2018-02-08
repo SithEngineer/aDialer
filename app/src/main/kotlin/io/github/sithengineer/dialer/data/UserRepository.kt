@@ -11,6 +11,7 @@ interface UserRepository {
   fun getUsers(): Flowable<List<User>>
   fun insertOrUpdateUsers(vararg user: User): Completable
   fun insertOrUpdateContactNumbers(vararg contactNumber: ContactNumber): Completable
+  fun getContactsForUser(user: User): Flowable<List<ContactNumber>>
   fun insertCallTo(user: User): Single<CallHistory>
   fun getCallHistories(): Flowable<List<CallHistory>>
 }

@@ -8,7 +8,7 @@ import io.github.sithengineer.dialer.abstraction.dependencyinjection.scope.Appli
 import io.github.sithengineer.dialer.data.dao.CallHistoryDao
 import io.github.sithengineer.dialer.data.dao.ContactNumberDao
 import io.github.sithengineer.dialer.data.dao.UserDao
-import io.github.sithengineer.dialer.data.source.UserLocalRepository
+import io.github.sithengineer.dialer.data.source.LocalUserRepository
 
 @Module
 abstract class DatabaseModule {
@@ -44,7 +44,7 @@ abstract class DatabaseModule {
     @JvmStatic
     fun provideUserRepository(userDao: UserDao,
         callHistoryDao: CallHistoryDao, contactNumberDao: ContactNumberDao): UserRepository =
-        UserLocalRepository(userDao, callHistoryDao, contactNumberDao)
+        LocalUserRepository(userDao, callHistoryDao, contactNumberDao)
   }
 
 }

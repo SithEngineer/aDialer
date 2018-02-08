@@ -12,7 +12,7 @@ import io.reactivex.Flowable
 import io.reactivex.Single
 import javax.inject.Inject
 
-class UserLocalRepository @Inject constructor(
+class LocalUserRepository @Inject constructor(
     private val userDao: UserDao,
     private val callHistoryDao: CallHistoryDao,
     private val contactNumberDao: ContactNumberDao
@@ -32,7 +32,12 @@ class UserLocalRepository @Inject constructor(
 
   override fun getCallHistories() = callHistoryDao.getAll()
 
-  override fun insertOrUpdateContactNumbers(vararg contactNumber: ContactNumber) = Completable.fromAction {
+  override fun insertOrUpdateContactNumbers(
+      vararg contactNumber: ContactNumber) = Completable.fromAction {
     contactNumberDao.insertOrUpdate(*contactNumber)
   }
+
+  override fun getContactsForUser(user: User): Flowable<List<ContactNumber>> =
+      contactNumberDao.get(user.id)
+
 }

@@ -20,8 +20,7 @@ class CallUser @Inject constructor(
             .map { callHistory ->
               CallHistoryViewModel(request.user,
                   callHistory)
-            }
-            .delay(2, SECONDS))
+            })
   }
 
   class Request(internal val user: User) : UseCase.RequestValues

@@ -20,7 +20,7 @@ import io.reactivex.disposables.CompositeDisposable
 
 @Module(includes = [
   (AndroidInjectionModule::class), (SchedulersModule::class), (DatabaseModule::class),
-  (ContactSyncServiceProvider::class)//, (UseCaseModule::class)
+  (ContactSyncServiceProvider::class)
 ])
 abstract class AppModule {
 
