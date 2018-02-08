@@ -4,7 +4,6 @@ import android.graphics.Rect
 import android.support.v7.widget.RecyclerView
 import android.view.View
 
-
 class SpacingItemDecoration(
     private val spaceInPx: Int,
     private val isVertical: Boolean = true,

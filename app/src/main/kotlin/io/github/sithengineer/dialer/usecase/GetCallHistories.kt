@@ -1,12 +1,12 @@
 package io.github.sithengineer.dialer.usecase
 
 import io.github.sithengineer.dialer.abstraction.UseCase
-import io.github.sithengineer.dialer.viewmodel.CallHistoryViewModel
 import io.github.sithengineer.dialer.data.UserRepository
 import io.github.sithengineer.dialer.data.model.CallHistory
 import io.github.sithengineer.dialer.data.model.User
 import io.github.sithengineer.dialer.usecase.GetCallHistories.Request
 import io.github.sithengineer.dialer.usecase.GetCallHistories.Response
+import io.github.sithengineer.dialer.viewmodel.CallHistoryViewModel
 import io.reactivex.Flowable
 import io.reactivex.functions.BiFunction
 import javax.inject.Inject

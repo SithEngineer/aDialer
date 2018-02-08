@@ -12,7 +12,7 @@ class ExampleSpekTest : Spek({
 
   given("x = $x and y = $y") {
 
-    on("addition"){
+    on("addition") {
 
       it("should be that x + y = 5") {
         val result = x + y
@@ -25,7 +25,7 @@ class ExampleSpekTest : Spek({
       }
     }
 
-    on("subtraction"){
+    on("subtraction") {
 
       it("should be that x - y = -1") {
         val result = x - y
