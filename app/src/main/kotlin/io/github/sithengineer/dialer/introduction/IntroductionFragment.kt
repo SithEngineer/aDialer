@@ -19,6 +19,7 @@ import com.jakewharton.rxbinding2.view.RxView
 import io.github.sithengineer.dialer.R
 import io.github.sithengineer.dialer.abstraction.ui.BaseViewFragment
 import io.github.sithengineer.dialer.background.ContactSyncService
+import io.github.sithengineer.dialer.introduction.IntroductionView.PermissionToReadContacts
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
@@ -34,7 +35,7 @@ class IntroductionFragment : BaseViewFragment<IntroductionPresenter>(), Introduc
   @BindView(R.id.fragment_introduction_fab_button)
   lateinit var fab: FloatingActionButton
 
-  lateinit var failedToLoadContactsSubject: PublishSubject<Any>
+  private lateinit var permissionToReadContactsSubject: PublishSubject<PermissionToReadContacts>
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
@@ -43,15 +44,15 @@ class IntroductionFragment : BaseViewFragment<IntroductionPresenter>(), Introduc
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    failedToLoadContactsSubject = PublishSubject.create()
+    permissionToReadContactsSubject = PublishSubject.create()
   }
 
-  override fun failedToLoadContactsByUserAction(): Observable<Any> {
-    return failedToLoadContactsSubject
+  override fun permissionToReadContacts(): Observable<PermissionToReadContacts> {
+    return permissionToReadContactsSubject
   }
 
   override fun nextButtonSelected(): Observable<Any> {
-    return RxView.clicks(fab).debounce(400, TimeUnit.MILLISECONDS)
+    return RxView.clicks(fab).throttleFirst(400, TimeUnit.MILLISECONDS)
   }
 
   override fun syncContacts() {
@@ -77,12 +78,13 @@ class IntroductionFragment : BaseViewFragment<IntroductionPresenter>(), Introduc
   }
 
   override fun showStep(step: IntroductionStep) {
-    instructions.text = getString(step.text)
+    instructions.text = getString(step.textId)
   }
 
   private fun readContacts(context: Context) {
     val syncContacts = Intent(context, ContactSyncService::class.java)
     context.startService(syncContacts)
+    permissionToReadContactsSubject.onNext(PermissionToReadContacts.GRANTED)
   }
 
   override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>,
@@ -91,7 +93,7 @@ class IntroductionFragment : BaseViewFragment<IntroductionPresenter>(), Introduc
     if (requestCode == CONTACTS_REQUEST_CODE) {
       if (grantResults.isEmpty() ||
           (grantResults[0] != PackageManager.PERMISSION_GRANTED && grantResults[1] != PackageManager.PERMISSION_GRANTED)) {
-        failedToLoadContactsSubject.onNext(Any())
+        permissionToReadContactsSubject.onNext(PermissionToReadContacts.DENIED)
       } else {
         readContacts(context!!)
       }

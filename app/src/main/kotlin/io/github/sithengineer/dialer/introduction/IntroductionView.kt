@@ -11,5 +11,9 @@ interface IntroductionView : View {
   fun showLoading()
   fun hideLoading()
   fun showButton()
-  fun failedToLoadContactsByUserAction(): Observable<Any>
+  fun permissionToReadContacts(): Observable<PermissionToReadContacts>
+
+  enum class PermissionToReadContacts {
+    GRANTED, DENIED
+  }
 }
