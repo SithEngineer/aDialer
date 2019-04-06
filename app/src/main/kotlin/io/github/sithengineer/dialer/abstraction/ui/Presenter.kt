@@ -1,4 +1,4 @@
-package io.github.sithengineer.dialer.abstraction.mvp
+package io.github.sithengineer.dialer.abstraction.ui
 
 import android.os.Bundle
 

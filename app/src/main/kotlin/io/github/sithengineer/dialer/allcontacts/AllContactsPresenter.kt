@@ -1,5 +1,5 @@
 package io.github.sithengineer.dialer.allcontacts
 
-import io.github.sithengineer.dialer.abstraction.mvp.Presenter
+import io.github.sithengineer.dialer.abstraction.ui.Presenter
 
 interface AllContactsPresenter : Presenter

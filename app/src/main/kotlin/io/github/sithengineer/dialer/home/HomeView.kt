@@ -1,6 +1,6 @@
 package io.github.sithengineer.dialer.home
 
-import io.github.sithengineer.dialer.abstraction.mvp.View
+import io.github.sithengineer.dialer.abstraction.ui.View
 
 interface HomeView : View {
   fun selectAllContacts()

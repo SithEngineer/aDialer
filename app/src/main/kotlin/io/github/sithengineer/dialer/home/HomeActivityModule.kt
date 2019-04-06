@@ -1,6 +1,7 @@
 package io.github.sithengineer.dialer.home
 
 import android.app.Activity
+import android.content.Context
 import android.content.IntentFilter
 import dagger.Binds
 import dagger.Module
@@ -24,10 +25,9 @@ abstract class HomeActivityModule {
     @Provides
     @ActivityScope
     @JvmStatic
-    fun provideContactsLoadedCompletable(activity: Activity,
+    fun provideContactsLoadedCompletable(context: Context,
         filter: IntentFilter): Observable<Any> {
-      return RxLocalBroadcastReceiver.generateObservable(activity,
-          filter).map { _ -> Any() }
+      return RxLocalBroadcastReceiver.generateObservable(context, filter).map { Any() }
     }
   }
 

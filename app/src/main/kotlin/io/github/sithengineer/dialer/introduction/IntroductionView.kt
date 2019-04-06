@@ -1,6 +1,6 @@
 package io.github.sithengineer.dialer.introduction
 
-import io.github.sithengineer.dialer.abstraction.mvp.View
+import io.github.sithengineer.dialer.abstraction.ui.View
 import io.reactivex.Observable
 
 interface IntroductionView : View {

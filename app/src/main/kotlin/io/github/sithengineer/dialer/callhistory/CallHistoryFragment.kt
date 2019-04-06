@@ -11,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import butterknife.BindView
 import io.github.sithengineer.dialer.R
-import io.github.sithengineer.dialer.abstraction.mvp.BaseViewFragment
+import io.github.sithengineer.dialer.abstraction.ui.BaseViewFragment
 import io.github.sithengineer.dialer.viewmodel.CallHistoryViewModel
 
 class CallHistoryFragment : BaseViewFragment<CallHistoryPresenter>(),

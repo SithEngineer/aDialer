@@ -17,7 +17,7 @@ import android.widget.TextView
 import butterknife.BindView
 import com.jakewharton.rxbinding2.view.RxView
 import io.github.sithengineer.dialer.R
-import io.github.sithengineer.dialer.abstraction.mvp.BaseViewFragment
+import io.github.sithengineer.dialer.abstraction.ui.BaseViewFragment
 import io.github.sithengineer.dialer.background.ContactSyncService
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject

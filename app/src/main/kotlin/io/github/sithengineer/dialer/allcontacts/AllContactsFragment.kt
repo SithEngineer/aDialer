@@ -13,7 +13,7 @@ import android.view.ViewGroup
 import butterknife.BindView
 import io.github.sithengineer.dialer.R
 import io.github.sithengineer.dialer.R.dimen
-import io.github.sithengineer.dialer.abstraction.mvp.BaseViewFragment
+import io.github.sithengineer.dialer.abstraction.ui.BaseViewFragment
 import io.github.sithengineer.dialer.data.model.User
 import io.github.sithengineer.dialer.util.ScreenMath
 import javax.inject.Inject

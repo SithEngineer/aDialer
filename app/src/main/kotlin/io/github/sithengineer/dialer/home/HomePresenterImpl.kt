@@ -3,7 +3,7 @@ package io.github.sithengineer.dialer.home
 import android.content.SharedPreferences
 import android.os.Bundle
 import io.github.sithengineer.dialer.abstraction.dependencyinjection.components.SchedulersModule
-import io.github.sithengineer.dialer.abstraction.mvp.BasePresenter
+import io.github.sithengineer.dialer.abstraction.ui.BasePresenter
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable

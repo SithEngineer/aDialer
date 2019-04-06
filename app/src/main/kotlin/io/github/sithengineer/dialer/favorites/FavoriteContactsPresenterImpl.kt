@@ -3,7 +3,7 @@ package io.github.sithengineer.dialer.favorites
 import android.os.Bundle
 import io.github.sithengineer.dialer.abstraction.dependencyinjection.components.SchedulersModule
 import io.github.sithengineer.dialer.abstraction.dependencyinjection.scope.FragmentScope
-import io.github.sithengineer.dialer.abstraction.mvp.BasePresenter
+import io.github.sithengineer.dialer.abstraction.ui.BasePresenter
 import io.github.sithengineer.dialer.usecase.CallUser
 import io.github.sithengineer.dialer.usecase.GetUsers
 import io.github.sithengineer.dialer.usecase.GetUsers.Request

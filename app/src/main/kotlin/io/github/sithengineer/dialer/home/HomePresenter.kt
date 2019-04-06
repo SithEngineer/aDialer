@@ -1,5 +1,5 @@
 package io.github.sithengineer.dialer.home
 
-import io.github.sithengineer.dialer.abstraction.mvp.Presenter
+import io.github.sithengineer.dialer.abstraction.ui.Presenter
 
 interface HomePresenter : Presenter

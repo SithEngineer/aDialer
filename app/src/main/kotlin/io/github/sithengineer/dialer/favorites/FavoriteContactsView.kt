@@ -1,6 +1,6 @@
 package io.github.sithengineer.dialer.favorites
 
-import io.github.sithengineer.dialer.abstraction.mvp.View
+import io.github.sithengineer.dialer.abstraction.ui.View
 import io.github.sithengineer.dialer.data.model.User
 import io.reactivex.Observable
 

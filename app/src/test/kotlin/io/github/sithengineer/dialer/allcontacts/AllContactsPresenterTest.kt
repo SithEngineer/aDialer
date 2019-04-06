@@ -1,11 +1,5 @@
 package io.github.sithengineer.dialer.allcontacts
 
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.spy
-import com.nhaarman.mockito_kotlin.times
-import com.nhaarman.mockito_kotlin.verify
 import io.github.sithengineer.dialer.DummyData
 import io.github.sithengineer.dialer.InitializedUserRepository
 import io.github.sithengineer.dialer.data.model.User
@@ -16,10 +10,6 @@ import io.github.sithengineer.dialer.usecase.filter.EmptyUserFilter
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.given
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
 
 class AllContactsPresenterTest : Spek({
   given("a presenter for listing all contacts") {

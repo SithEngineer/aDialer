@@ -7,7 +7,7 @@ import android.widget.FrameLayout
 import butterknife.BindView
 import com.jakewharton.rxbinding2.support.design.widget.RxBottomNavigationView
 import io.github.sithengineer.dialer.R
-import io.github.sithengineer.dialer.abstraction.mvp.BaseActivity
+import io.github.sithengineer.dialer.abstraction.ui.BaseActivity
 import io.github.sithengineer.dialer.allcontacts.AllContactsFragment
 import io.github.sithengineer.dialer.callhistory.CallHistoryFragment
 import io.github.sithengineer.dialer.favorites.FavoriteContactsFragment

@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.jakewharton.rxbinding2.view.RxView
 import io.github.sithengineer.dialer.R
-import io.github.sithengineer.dialer.abstraction.mvp.BaseRecyclerViewHolder
+import io.github.sithengineer.dialer.abstraction.ui.BaseRecyclerViewHolder
 import io.github.sithengineer.dialer.data.model.User
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -23,15 +23,15 @@ class AllContactsAdapter : RecyclerView.Adapter<AllContactsAdapter.ViewHolder>()
   private val userCallPublisher: PublishSubject<User> = PublishSubject.create()
   private val users = mutableListOf<User>()
 
-  override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
-    val view = LayoutInflater.from(parent?.context).inflate(ViewHolder.LAYOUT_ID, parent, false)
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    val view = LayoutInflater.from(parent.context).inflate(ViewHolder.LAYOUT_ID, parent, false)
     return ViewHolder(view, userFavoritePublisher, userEditPublisher, userCallPublisher)
   }
 
   override fun getItemCount(): Int = users.size
 
-  override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-    holder?.bind(users[position])
+  override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    holder.bind(users[position])
   }
 
   fun setUsers(users: List<User>) {
@@ -71,13 +71,14 @@ class AllContactsAdapter : RecyclerView.Adapter<AllContactsAdapter.ViewHolder>()
     lateinit var favorite: ImageView
 
     init {
-      RxView.clicks(favorite).subscribe({ _ ->
+      // FIXME take care of these subscription leaks
+      RxView.clicks(favorite).subscribe {
         isFavorite = isFavorite.not()
         setFavoriteIcon()
         userFavoritePublisher.onNext(user)
-      })
-      RxView.clicks(edit).subscribe({ _ -> userEditPublisher.onNext(user) })
-      RxView.clicks(itemView).subscribe({ _ -> userCallPublisher.onNext(user) })
+      }
+      RxView.clicks(edit).subscribe { userEditPublisher.onNext(user) }
+      RxView.clicks(itemView).subscribe { userCallPublisher.onNext(user) }
     }
 
     private lateinit var user: User
