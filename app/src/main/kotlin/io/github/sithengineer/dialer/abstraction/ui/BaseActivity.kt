@@ -11,19 +11,19 @@ import dagger.android.support.DaggerAppCompatActivity
 
 abstract class BaseActivity : DaggerAppCompatActivity() {
 
-  private var viewUnbinder: Unbinder? = null
+  private var viewUnBinder: Unbinder? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     AndroidInjection.inject(this)
     super.onCreate(savedInstanceState)
     setContentView(getContentViewId())
-    viewUnbinder = ButterKnife.bind(this)
+    viewUnBinder = ButterKnife.bind(this)
   }
 
   abstract fun getContentViewId(): Int
 
   override fun onDestroy() {
-    viewUnbinder?.unbind()
+    viewUnBinder?.unbind()
     super.onDestroy()
   }
 

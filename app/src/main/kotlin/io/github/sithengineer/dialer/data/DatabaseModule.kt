@@ -7,7 +7,7 @@ import dagger.Provides
 import io.github.sithengineer.dialer.abstraction.dependencyinjection.scope.ApplicationScope
 import io.github.sithengineer.dialer.data.dao.CallHistoryDao
 import io.github.sithengineer.dialer.data.dao.ContactNumberDao
-import io.github.sithengineer.dialer.data.dao.UserDao
+import io.github.sithengineer.dialer.data.dao.ContactDao
 import io.github.sithengineer.dialer.data.source.LocalUserRepository
 
 @Module
@@ -20,12 +20,13 @@ abstract class DatabaseModule {
     @JvmStatic
     fun provideDatabase(application: Application): DialerDatabase =
         Room.databaseBuilder(application, DialerDatabase::class.java, "dialer-db")
+            .fallbackToDestructiveMigration() // TODO improve migrations between versions
             .build()
 
     @Provides
     @ApplicationScope
     @JvmStatic
-    fun provideUserDao(database: DialerDatabase): UserDao = database.getUserDao()
+    fun provideUserDao(database: DialerDatabase): ContactDao = database.getContactDao()
 
     @Provides
     @ApplicationScope
@@ -42,9 +43,9 @@ abstract class DatabaseModule {
     @Provides
     @ApplicationScope
     @JvmStatic
-    fun provideUserRepository(userDao: UserDao,
+    fun provideUserRepository(contactDao: ContactDao,
         callHistoryDao: CallHistoryDao, contactNumberDao: ContactNumberDao): UserRepository =
-        LocalUserRepository(userDao, callHistoryDao, contactNumberDao)
+        LocalUserRepository(contactDao, callHistoryDao, contactNumberDao)
   }
 
 }

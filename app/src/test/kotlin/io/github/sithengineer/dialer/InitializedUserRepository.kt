@@ -3,7 +3,7 @@ package io.github.sithengineer.dialer
 import io.github.sithengineer.dialer.data.UserRepository
 import io.github.sithengineer.dialer.data.model.CallHistory
 import io.github.sithengineer.dialer.data.model.ContactNumber
-import io.github.sithengineer.dialer.data.model.User
+import io.github.sithengineer.dialer.data.model.Contact
 import io.github.sithengineer.dialer.data.source.InMemoryUserRepository
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -17,7 +17,7 @@ class InitializedUserRepository : UserRepository {
     userRepository = InMemoryUserRepository()
 
     userRepository
-        .insertOrUpdateUsers(*DummyData.users.toTypedArray())
+        .insertOrUpdateUsers(*DummyData.CONTACTS.toTypedArray())
         .subscribe()
 
     userRepository
@@ -25,20 +25,20 @@ class InitializedUserRepository : UserRepository {
         .subscribe()
   }
 
-  override fun getContactsForUser(user: User): Flowable<List<ContactNumber>> =
-      userRepository.getContactsForUser(user)
+  override fun getContactsForUser(contact: Contact): Flowable<List<ContactNumber>> =
+      userRepository.getContactsForUser(contact)
 
-  override fun getUsers(): Flowable<List<User>> =
+  override fun getUsers(): Flowable<List<Contact>> =
       userRepository.getUsers()
 
-  override fun insertOrUpdateUsers(vararg user: User): Completable =
-      userRepository.insertOrUpdateUsers(*user)
+  override fun insertOrUpdateUsers(vararg contact: Contact): Completable =
+      userRepository.insertOrUpdateUsers(*contact)
 
   override fun insertOrUpdateContactNumbers(vararg contactNumber: ContactNumber): Completable =
       userRepository.insertOrUpdateContactNumbers(*contactNumber)
 
-  override fun insertCallTo(user: User): Single<CallHistory> =
-      userRepository.insertCallTo(user)
+  override fun insertCallTo(contact: Contact): Single<CallHistory> =
+      userRepository.insertCallTo(contact)
 
   override fun getCallHistories(): Flowable<List<CallHistory>> =
       userRepository.getCallHistories()

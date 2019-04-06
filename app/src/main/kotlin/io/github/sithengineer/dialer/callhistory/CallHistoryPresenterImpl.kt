@@ -43,9 +43,14 @@ class CallHistoryPresenterImpl @Inject constructor(
                   .subscribeOn(ioScheduler)
             }
             .observeOn(viewScheduler)
-            .subscribe({ callHistoryEntry ->
-              view.showCallEndedMessage(callHistoryEntry.user.name)
-            })
+            .subscribe(
+                { callHistoryEntry ->
+                  view.showCallEndedMessage(callHistoryEntry.contact.name)
+                },
+                { err ->
+                  Timber.e(err)
+                }
+            )
     )
   }
 
@@ -53,9 +58,14 @@ class CallHistoryPresenterImpl @Inject constructor(
     disposables.add(
         view.selectedEditUser()
             .observeOn(viewScheduler)
-            .subscribe({ user ->
-              view.showEditUser(user.lookupKey)
-            })
+            .subscribe(
+                { user ->
+                  view.showEditUser(user.lookupKey)
+                },
+                { err ->
+                  Timber.e(err)
+                }
+            )
     )
   }
 
@@ -65,11 +75,16 @@ class CallHistoryPresenterImpl @Inject constructor(
             .flatMapSingle { user ->
               toggleFavoriteUser.execute(
                   ToggleFavoriteUser.Request(user))
-                  .updatedUser
+                  .updatedContact
                   .subscribeOn(ioScheduler)
             }
             .observeOn(viewScheduler)
-            .subscribe()
+            .subscribe(
+                {},
+                { err ->
+                  Timber.e(err)
+                }
+            )
     )
   }
 

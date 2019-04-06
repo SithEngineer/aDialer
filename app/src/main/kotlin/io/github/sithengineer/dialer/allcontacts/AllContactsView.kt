@@ -1,14 +1,14 @@
 package io.github.sithengineer.dialer.allcontacts
 
 import io.github.sithengineer.dialer.abstraction.ui.View
-import io.github.sithengineer.dialer.data.model.User
+import io.github.sithengineer.dialer.data.model.Contact
 import io.reactivex.Observable
 
 interface AllContactsView : View {
-  fun selectedEditUser(): Observable<User>
-  fun selectedToggleFavoriteUser(): Observable<User>
-  fun selectedCallUser(): Observable<User>
-  fun showUsers(users: List<User>)
+  fun selectedEditUser(): Observable<Contact>
+  fun selectedToggleFavoriteUser(): Observable<Contact>
+  fun selectedCallUser(): Observable<Contact>
+  fun showUsers(contacts: List<Contact>)
   fun showEditUser(userLookupKey: String)
   fun showCallEndedMessage(userName: String)
 }

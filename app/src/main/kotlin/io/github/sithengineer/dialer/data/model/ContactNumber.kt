@@ -8,7 +8,7 @@ import java.util.UUID
 @Entity(tableName = "contact_number")
 data class ContactNumber(
     @PrimaryKey @ColumnInfo(name = "numberId") var id: String = UUID.randomUUID().toString(),
-    @ColumnInfo(name = "userId") var userId: String,
+    @ColumnInfo(name = "contactId") var contactId: String,
     @ColumnInfo(name = "number") var number: String,
     @ColumnInfo(name = "libphonenumber_numberType") var numberType: String
 )

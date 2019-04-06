@@ -2,7 +2,7 @@ package io.github.sithengineer.dialer.usecase
 
 import io.github.sithengineer.dialer.abstraction.UseCase
 import io.github.sithengineer.dialer.data.UserRepository
-import io.github.sithengineer.dialer.data.model.User
+import io.github.sithengineer.dialer.data.model.Contact
 import io.github.sithengineer.dialer.usecase.ToggleFavoriteUser.Request
 import io.github.sithengineer.dialer.usecase.ToggleFavoriteUser.Response
 import io.reactivex.Single
@@ -13,11 +13,11 @@ class ToggleFavoriteUser @Inject constructor(
 ) : UseCase<Request, Response> {
 
   override fun execute(request: Request): Response {
-    val userCopy = request.user.copy(isFavorite = request.user.isFavorite.not())
+    val userCopy = request.contact.copy(isFavorite = request.contact.isFavorite.not())
     return Response(userRepository.insertOrUpdateUsers(userCopy).toSingleDefault(userCopy))
   }
 
-  class Request(internal val user: User) : UseCase.RequestValues
+  class Request(internal val contact: Contact) : UseCase.RequestValues
 
-  class Response(val updatedUser: Single<User>) : UseCase.ResponseValue
+  class Response(val updatedContact: Single<Contact>) : UseCase.ResponseValue
 }

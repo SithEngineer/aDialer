@@ -156,3 +156,10 @@ dependencies {
   androidTestRuntimeOnly "de.mannodermaus.junit5:android-instrumentation-test-runner:$junit5_runner"
 }
 
+kotlin {
+  experimental {
+    coroutines "enable"
+  }
+}
+
+

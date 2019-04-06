@@ -43,9 +43,14 @@ class FavoriteContactsPresenterImpl @Inject constructor(
                   .subscribeOn(ioScheduler)
             }
             .observeOn(viewScheduler)
-            .subscribe({ callHistoryEntry ->
-              view.showCallEndedMessage(callHistoryEntry.user.name)
-            })
+            .subscribe(
+                { callHistoryEntry ->
+                  view.showCallEndedMessage(callHistoryEntry.contact.name)
+                },
+                { err ->
+                  Timber.e(err)
+                }
+            )
     )
   }
 
@@ -53,9 +58,14 @@ class FavoriteContactsPresenterImpl @Inject constructor(
     disposables.add(
         view.selectedEditUser()
             .observeOn(viewScheduler)
-            .subscribe({ user ->
-              view.showEditUser(user.lookupKey)
-            })
+            .subscribe(
+                { user ->
+                  view.showEditUser(user.lookupKey)
+                },
+                { err ->
+                  Timber.e(err)
+                }
+            )
     )
   }
 
@@ -65,16 +75,21 @@ class FavoriteContactsPresenterImpl @Inject constructor(
             .flatMapSingle { user ->
               toggleFavoriteUser.execute(
                   ToggleFavoriteUser.Request(user))
-                  .updatedUser
+                  .updatedContact
                   .subscribeOn(ioScheduler)
             }
             .observeOn(viewScheduler)
-            .subscribe({ user ->
-              if (!user.isFavorite) {
-                // status was toggled
-                view.removeUser(user)
-              }
-            })
+            .subscribe(
+                { user ->
+                  if (!user.isFavorite) {
+                    // status was toggled
+                    view.removeUser(user)
+                  }
+                },
+                { err ->
+                  Timber.e(err)
+                }
+            )
     )
   }
 

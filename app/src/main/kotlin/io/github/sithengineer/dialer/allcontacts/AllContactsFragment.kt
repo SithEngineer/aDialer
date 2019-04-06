@@ -14,7 +14,7 @@ import butterknife.BindView
 import io.github.sithengineer.dialer.R
 import io.github.sithengineer.dialer.R.dimen
 import io.github.sithengineer.dialer.abstraction.ui.BaseViewFragment
-import io.github.sithengineer.dialer.data.model.User
+import io.github.sithengineer.dialer.data.model.Contact
 import io.github.sithengineer.dialer.util.ScreenMath
 import javax.inject.Inject
 
@@ -55,8 +55,8 @@ class AllContactsFragment : BaseViewFragment<AllContactsPresenter>(), AllContact
 
   override fun selectedCallUser() = adapter.userCallSelected()
 
-  override fun showUsers(users: List<User>) {
-    adapter.setUsers(users)
+  override fun showUsers(contacts: List<Contact>) {
+    adapter.setUsers(contacts)
   }
 
   override fun showEditUser(userLookupKey: String) {

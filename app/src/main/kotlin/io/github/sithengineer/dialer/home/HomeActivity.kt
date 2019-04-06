@@ -34,7 +34,7 @@ class HomeActivity : BaseActivity(), HomeView {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     disposables.add(
-        RxBottomNavigationView.itemSelections(navigation).subscribe({ item ->
+        RxBottomNavigationView.itemSelections(navigation).subscribe { item ->
           when (item.itemId) {
             R.id.navigation_favorites -> {
               showFavoriteContactsView()
@@ -46,7 +46,7 @@ class HomeActivity : BaseActivity(), HomeView {
               showAllContactsView()
             }
           }
-        })
+        }
     )
     presenter.start(savedInstanceState)
   }

@@ -7,6 +7,7 @@ import io.github.sithengineer.dialer.abstraction.ui.BasePresenter
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -35,13 +36,11 @@ class HomePresenterImpl @Inject constructor(
     disposables.add(
         contactsLoaded
             .observeOn(viewScheduler)
-            .subscribe(
-                { _ ->
-                  preferences.edit().putBoolean(SHOW_INTRODUCTION, false).apply()
-                  view.showBottomNavigationBar()
-                  view.selectAllContacts()
-                }
-            )
+            .subscribe({
+              preferences.edit().putBoolean(SHOW_INTRODUCTION, false).apply()
+              view.showBottomNavigationBar()
+              view.selectAllContacts()
+            }, { error -> Timber.e(error) })
     )
   }
 

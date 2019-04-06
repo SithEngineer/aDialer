@@ -16,17 +16,18 @@ class DialerApplication : DaggerApplication() {
   override fun onCreate() {
     super.onCreate()
 
-    if (BuildConfig.DEBUG) {
-      Timber.plant(Timber.DebugTree())
-      enableStrictMode()
-    } else {
-      Timber.plant(CrashReportTree())
-    }
-
     DaggerAppComponent
         .builder()
         .create(this)
         .inject(this)
+
+    if (BuildConfig.DEBUG) {
+      Timber.plant(Timber.DebugTree())
+      // TODO enable this
+      //enableStrictMode()
+    } else {
+      Timber.plant(CrashReportTree())
+    }
   }
 
   private fun enableStrictMode() {

@@ -2,7 +2,7 @@ package io.github.sithengineer.dialer.allcontacts
 
 import io.github.sithengineer.dialer.DummyData
 import io.github.sithengineer.dialer.InitializedUserRepository
-import io.github.sithengineer.dialer.data.model.User
+import io.github.sithengineer.dialer.data.model.Contact
 import io.github.sithengineer.dialer.usecase.CallUser
 import io.github.sithengineer.dialer.usecase.GetUsers
 import io.github.sithengineer.dialer.usecase.ToggleFavoriteUser
@@ -14,11 +14,11 @@ import io.reactivex.subjects.PublishSubject
 class AllContactsPresenterTest : Spek({
   given("a presenter for listing all contacts") {
 
-    val users = DummyData.users
+    val users = DummyData.CONTACTS
 
-    val publisherSelectedEditUser = PublishSubject.create<User>()
-    val publisherSelectedToggleFavoriteUser = PublishSubject.create<User>()
-    val publisherSelectedCallUser = PublishSubject.create<User>()
+    val publisherSelectedEditUser = PublishSubject.create<Contact>()
+    val publisherSelectedToggleFavoriteUser = PublishSubject.create<Contact>()
+    val publisherSelectedCallUser = PublishSubject.create<Contact>()
 
     val view = mock<AllContactsView> {
       on { selectedEditUser() } doReturn publisherSelectedEditUser
@@ -57,7 +57,7 @@ class AllContactsPresenterTest : Spek({
 
     on("toggle favorite contact") {
       publisherSelectedToggleFavoriteUser.onNext(users[0])
-      it("should switch favorite user status") {
+      it("should switch favorite contact status") {
         verify(toggleFavoriteUser, times(1)).execute(any())
       }
     }

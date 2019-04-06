@@ -2,30 +2,30 @@ package io.github.sithengineer.dialer.data.source
 
 import io.github.sithengineer.dialer.data.UserRepository
 import io.github.sithengineer.dialer.data.dao.CallHistoryDao
+import io.github.sithengineer.dialer.data.dao.ContactDao
 import io.github.sithengineer.dialer.data.dao.ContactNumberDao
-import io.github.sithengineer.dialer.data.dao.UserDao
 import io.github.sithengineer.dialer.data.model.CallHistory
+import io.github.sithengineer.dialer.data.model.Contact
 import io.github.sithengineer.dialer.data.model.ContactNumber
-import io.github.sithengineer.dialer.data.model.User
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import javax.inject.Inject
 
 class LocalUserRepository @Inject constructor(
-    private val userDao: UserDao,
+    private val contactDao: ContactDao,
     private val callHistoryDao: CallHistoryDao,
     private val contactNumberDao: ContactNumberDao
 ) : UserRepository {
 
-  override fun getUsers(): Flowable<List<User>> = userDao.getAll()
+  override fun getUsers(): Flowable<List<Contact>> = contactDao.getAll()
 
-  override fun insertOrUpdateUsers(vararg user: User) = Completable.fromAction {
-    userDao.insertOrUpdate(*user)
+  override fun insertOrUpdateUsers(vararg contact: Contact): Completable = Completable.fromAction {
+    contactDao.insertOrUpdate(*contact)
   }
 
-  override fun insertCallTo(user: User) = Single.fromCallable {
-    val entry = CallHistory(toUserId = user.id)
+  override fun insertCallTo(contact: Contact): Single<CallHistory> = Single.fromCallable {
+    val entry = CallHistory(toUserId = contact.id)
     callHistoryDao.insert(entry)
     entry
   }
@@ -33,11 +33,11 @@ class LocalUserRepository @Inject constructor(
   override fun getCallHistories() = callHistoryDao.getAll()
 
   override fun insertOrUpdateContactNumbers(
-      vararg contactNumber: ContactNumber) = Completable.fromAction {
+      vararg contactNumber: ContactNumber): Completable = Completable.fromAction {
     contactNumberDao.insertOrUpdate(*contactNumber)
   }
 
-  override fun getContactsForUser(user: User): Flowable<List<ContactNumber>> =
-      contactNumberDao.get(user.id)
+  override fun getContactsForUser(contact: Contact): Flowable<List<ContactNumber>> =
+      contactNumberDao.get(contact.id)
 
 }

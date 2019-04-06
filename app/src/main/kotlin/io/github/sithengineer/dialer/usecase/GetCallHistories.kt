@@ -3,7 +3,7 @@ package io.github.sithengineer.dialer.usecase
 import io.github.sithengineer.dialer.abstraction.UseCase
 import io.github.sithengineer.dialer.data.UserRepository
 import io.github.sithengineer.dialer.data.model.CallHistory
-import io.github.sithengineer.dialer.data.model.User
+import io.github.sithengineer.dialer.data.model.Contact
 import io.github.sithengineer.dialer.usecase.GetCallHistories.Request
 import io.github.sithengineer.dialer.usecase.GetCallHistories.Response
 import io.github.sithengineer.dialer.viewmodel.CallHistoryViewModel
@@ -20,20 +20,20 @@ class GetCallHistories @Inject constructor(
         Flowable.zip(
             userRepository.getUsers(),
             userRepository.getCallHistories(),
-            BiFunction<List<User>, List<CallHistory>, List<CallHistoryViewModel>>
+            BiFunction<List<Contact>, List<CallHistory>, List<CallHistoryViewModel>>
             { users, callHistories -> generateCallHistoriesWithUserData(users, callHistories) }
         )
     )
   }
 
-  private fun generateCallHistoriesWithUserData(users: List<User>,
+  private fun generateCallHistoriesWithUserData(contacts: List<Contact>,
       callHistories: List<CallHistory>): List<CallHistoryViewModel> {
     val callHistoriesViewModel = mutableListOf<CallHistoryViewModel>()
 
     callHistories.forEach { entry ->
       callHistoriesViewModel.add(
           CallHistoryViewModel(
-              users.first { it -> it.id == entry.toUserId }, entry)
+              contacts.first { it -> it.id == entry.toUserId }, entry)
       )
     }
 

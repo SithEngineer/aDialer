@@ -9,7 +9,7 @@ import dagger.android.DaggerIntentService
 import io.github.sithengineer.dialer.abstraction.ContactsLoadedReceiver
 import io.github.sithengineer.dialer.data.UserRepository
 import io.github.sithengineer.dialer.data.model.ContactNumber
-import io.github.sithengineer.dialer.data.model.User
+import io.github.sithengineer.dialer.data.model.Contact
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import timber.log.Timber
 import java.util.Locale
@@ -38,13 +38,13 @@ class ContactSyncService : DaggerIntentService("ContactSync_IntentService") {
 
     val phoneNumberUtil = PhoneNumberUtil.createInstance(applicationContext)
     val country = Locale.getDefault().country
-    val contacts = mutableListOf<User>()
+    val contacts = mutableListOf<Contact>()
     val contactNumbers = mutableListOf<ContactNumber>()
 
     if (cursor != null && cursor.moveToFirst()) {
       while (cursor.moveToNext()) {
 
-        val user = User(
+        val user = Contact(
             id = cursor.getString(CONTACT_ID_INDEX),
             name = cursor.getString(CONTACT_NAME_INDEX),
             lookupKey = cursor.getString(CONTACT_LOOKUP_KEY_INDEX),
@@ -54,19 +54,22 @@ class ContactSyncService : DaggerIntentService("ContactSync_IntentService") {
 
         val userPhones = mutableListOf<ContactNumber>()
 
-        val phones = contentResolver.query(Phone.CONTENT_URI, null,
+        val phonesCursor = contentResolver.query(Phone.CONTENT_URI, null,
             Phone.CONTACT_ID + " = " + cursor.getString(CONTACT_ID_INDEX), null, null)
 
-        while (phones.moveToNext()) {
-          val phoneNumber = phones.getString(phones.getColumnIndex(Phone.NUMBER))
-          val parsedPhoneNumber = phoneNumberUtil.parse(phoneNumber, country)
+        phonesCursor?.let { nonNullPhones ->
+          while (nonNullPhones.moveToNext()) {
+            val phoneNumber = nonNullPhones.getString(nonNullPhones.getColumnIndex(Phone.NUMBER))
+            val parsedPhoneNumber = phoneNumberUtil.parse(phoneNumber, country)
 
-          userPhones.add(
-              ContactNumber(userId = user.id, number = phoneNumber,
-                  numberType = phoneNumberUtil.getNumberType(parsedPhoneNumber).name)
-          )
+            userPhones.add(
+                ContactNumber(contactId = user.id, number = phoneNumber,
+                    numberType = phoneNumberUtil.getNumberType(parsedPhoneNumber).name)
+            )
+          }
+
         }
-        phones.close()
+        phonesCursor?.close()
 
         if (userPhones.isNotEmpty()) {
           contacts.add(user)
@@ -75,7 +78,7 @@ class ContactSyncService : DaggerIntentService("ContactSync_IntentService") {
       }
       cursor.close()
     }
-    Timber.w("Loaded ${contacts.size} contacts and ${contactNumbers.size} numbers")
+    Timber.i("Loaded ${contacts.size} contacts and ${contactNumbers.size} numbers")
     userRepository.insertOrUpdateUsers(*contacts.toTypedArray()).subscribe()
     userRepository.insertOrUpdateContactNumbers(*contactNumbers.toTypedArray()).subscribe()
 

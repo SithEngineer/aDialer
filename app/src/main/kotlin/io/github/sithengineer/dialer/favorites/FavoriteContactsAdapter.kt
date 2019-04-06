@@ -12,20 +12,20 @@ import com.bumptech.glide.request.RequestOptions
 import com.jakewharton.rxbinding2.view.RxView
 import io.github.sithengineer.dialer.R
 import io.github.sithengineer.dialer.abstraction.ui.BaseRecyclerViewHolder
-import io.github.sithengineer.dialer.data.model.User
+import io.github.sithengineer.dialer.data.model.Contact
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
 class FavoriteContactsAdapter : RecyclerView.Adapter<FavoriteContactsAdapter.ViewHolder>() {
 
-  private val userFavoritePublisher: PublishSubject<User> = PublishSubject.create()
-  private val userEditPublisher: PublishSubject<User> = PublishSubject.create()
-  private val userCallPublisher: PublishSubject<User> = PublishSubject.create()
-  private val users = mutableListOf<User>()
+  private val contactFavoritePublisher: PublishSubject<Contact> = PublishSubject.create()
+  private val contactEditPublisher: PublishSubject<Contact> = PublishSubject.create()
+  private val contactCallPublisher: PublishSubject<Contact> = PublishSubject.create()
+  private val users = mutableListOf<Contact>()
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val view = LayoutInflater.from(parent.context).inflate(ViewHolder.LAYOUT_ID, parent, false)
-    return ViewHolder(view, userFavoritePublisher, userEditPublisher, userCallPublisher)
+    return ViewHolder(view, contactFavoritePublisher, contactEditPublisher, contactCallPublisher)
   }
 
   override fun getItemCount(): Int = users.size
@@ -34,27 +34,27 @@ class FavoriteContactsAdapter : RecyclerView.Adapter<FavoriteContactsAdapter.Vie
     holder.bind(users[position])
   }
 
-  fun setUsers(users: List<User>) {
+  fun setUsers(contacts: List<Contact>) {
     this.users.clear()
-    this.users.addAll(users)
+    this.users.addAll(contacts)
     notifyDataSetChanged()
   }
 
-  fun removeUser(user: User) {
-    if (this.users.remove(user)) {
+  fun removeUser(contact: Contact) {
+    if (this.users.remove(contact)) {
       notifyDataSetChanged()
     }
   }
 
-  fun userFavoriteSelected(): Observable<User> = userFavoritePublisher
-  fun userEditSelected(): Observable<User> = userEditPublisher
-  fun userCallSelected(): Observable<User> = userCallPublisher
+  fun userFavoriteSelected(): Observable<Contact> = contactFavoritePublisher
+  fun userEditSelected(): Observable<Contact> = contactEditPublisher
+  fun userCallSelected(): Observable<Contact> = contactCallPublisher
 
   class ViewHolder(
       view: View,
-      userFavoritePublisher: PublishSubject<User>,
-      userEditPublisher: PublishSubject<User>,
-      userCallPublisher: PublishSubject<User>
+      contactFavoritePublisher: PublishSubject<Contact>,
+      contactEditPublisher: PublishSubject<Contact>,
+      contactCallPublisher: PublishSubject<Contact>
   ) : BaseRecyclerViewHolder(view) {
 
     companion object {
@@ -81,27 +81,27 @@ class FavoriteContactsAdapter : RecyclerView.Adapter<FavoriteContactsAdapter.Vie
       RxView.clicks(favorite).subscribe {
         isFavorite = isFavorite.not()
         setFavoriteIcon()
-        userFavoritePublisher.onNext(user)
+        contactFavoritePublisher.onNext(contact)
       }
-      RxView.clicks(edit).subscribe { userEditPublisher.onNext(user) }
-      RxView.clicks(itemView).subscribe { userCallPublisher.onNext(user) }
+      RxView.clicks(edit).subscribe { contactEditPublisher.onNext(contact) }
+      RxView.clicks(itemView).subscribe { contactCallPublisher.onNext(contact) }
     }
 
-    private lateinit var user: User
+    private lateinit var contact: Contact
     private var isFavorite = false
 
-    fun bind(user: User) {
-      this.user = user
-      isFavorite = user.isFavorite
+    fun bind(contact: Contact) {
+      this.contact = contact
+      isFavorite = contact.isFavorite
 
-      name.text = user.name
+      name.text = contact.name
       setFavoriteIcon()
 
-      if (user.thumbnailPath.isEmpty()) {
+      if (contact.thumbnailPath.isEmpty()) {
         image.visibility = View.GONE
       } else {
         val requestOptions = RequestOptions.circleCropTransform()
-        Glide.with(itemView).load(user.thumbnailPath).apply(requestOptions).into(image)
+        Glide.with(itemView).load(contact.thumbnailPath).apply(requestOptions).into(image)
       }
     }
 

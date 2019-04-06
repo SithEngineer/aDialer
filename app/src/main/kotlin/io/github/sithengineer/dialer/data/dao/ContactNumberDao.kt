@@ -10,7 +10,7 @@ import io.reactivex.Flowable
 @Dao
 interface ContactNumberDao {
 
-  @Query("SELECT * FROM contact_number WHERE contact_number.userId = :id")
+  @Query("SELECT * FROM contact_number WHERE contact_number.contactId = :id")
   fun get(id: String): Flowable<List<ContactNumber>>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)

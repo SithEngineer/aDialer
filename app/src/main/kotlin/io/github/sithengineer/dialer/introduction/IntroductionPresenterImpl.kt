@@ -34,7 +34,7 @@ class IntroductionPresenterImpl @Inject constructor(view: IntroductionView,
     disposables.add(
         view.nextButtonSelected()
             .observeOn(viewScheduler)
-            .subscribe({ _ ->
+            .subscribe({
               when (currentStep) {
                 ONE -> {
                   currentStep = TWO
@@ -62,7 +62,7 @@ class IntroductionPresenterImpl @Inject constructor(view: IntroductionView,
     disposables.add(
         view.failedToLoadContactsByUserAction()
             .observeOn(viewScheduler)
-            .subscribe({ _ ->
+            .subscribe({
               currentStep = FAILURE
               view.showStep(currentStep)
               view.showButton()

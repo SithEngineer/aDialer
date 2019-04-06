@@ -12,21 +12,22 @@ import com.bumptech.glide.request.RequestOptions
 import com.jakewharton.rxbinding2.view.RxView
 import io.github.sithengineer.dialer.R
 import io.github.sithengineer.dialer.abstraction.ui.BaseRecyclerViewHolder
-import io.github.sithengineer.dialer.data.model.User
+import io.github.sithengineer.dialer.data.model.Contact
 import io.github.sithengineer.dialer.viewmodel.CallHistoryViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
+import timber.log.Timber
 
 class CallHistoryAdapter : RecyclerView.Adapter<CallHistoryAdapter.ViewHolder>() {
 
-  private val userFavoritePublisher: PublishSubject<User> = PublishSubject.create()
-  private val userEditPublisher: PublishSubject<User> = PublishSubject.create()
-  private val userCallPublisher: PublishSubject<User> = PublishSubject.create()
+  private val contactFavoritePublisher: PublishSubject<Contact> = PublishSubject.create()
+  private val contactEditPublisher: PublishSubject<Contact> = PublishSubject.create()
+  private val contactCallPublisher: PublishSubject<Contact> = PublishSubject.create()
   private val callHistories = mutableListOf<CallHistoryViewModel>()
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val view = LayoutInflater.from(parent?.context).inflate(ViewHolder.LAYOUT_ID, parent, false)
-    return ViewHolder(view, userFavoritePublisher, userEditPublisher, userCallPublisher)
+    return ViewHolder(view, contactFavoritePublisher, contactEditPublisher, contactCallPublisher)
   }
 
   override fun getItemCount(): Int = callHistories.size
@@ -47,15 +48,15 @@ class CallHistoryAdapter : RecyclerView.Adapter<CallHistoryAdapter.ViewHolder>()
     notifyDataSetChanged()
   }
 
-  fun userFavoriteSelected(): Observable<User> = userFavoritePublisher
-  fun userEditSelected(): Observable<User> = userEditPublisher
-  fun userCallSelected(): Observable<User> = userCallPublisher
+  fun userFavoriteSelected(): Observable<Contact> = contactFavoritePublisher
+  fun userEditSelected(): Observable<Contact> = contactEditPublisher
+  fun userCallSelected(): Observable<Contact> = contactCallPublisher
 
   class ViewHolder(
       view: View,
-      userFavoritePublisher: PublishSubject<User>,
-      userEditPublisher: PublishSubject<User>,
-      userCallPublisher: PublishSubject<User>
+      contactFavoritePublisher: PublishSubject<Contact>,
+      contactEditPublisher: PublishSubject<Contact>,
+      contactCallPublisher: PublishSubject<Contact>
   ) : BaseRecyclerViewHolder(view) {
 
     companion object {
@@ -78,30 +79,46 @@ class CallHistoryAdapter : RecyclerView.Adapter<CallHistoryAdapter.ViewHolder>()
     lateinit var favorite: ImageView
 
     init {
-      RxView.clicks(favorite).subscribe({ _ ->
-        isFavorite = isFavorite.not()
-        setFavoriteIcon()
-        userFavoritePublisher.onNext(user)
-      })
-      RxView.clicks(edit).subscribe({ userEditPublisher.onNext(user) })
-      RxView.clicks(itemView).subscribe({ userCallPublisher.onNext(user) })
+      // FIXME take care of these subscription leaks
+      RxView.clicks(favorite).subscribe(
+          {
+            isFavorite = isFavorite.not()
+            setFavoriteIcon()
+            contactFavoritePublisher.onNext(contact)
+          },
+          { err ->
+            Timber.e(err)
+          }
+      )
+      RxView.clicks(edit).subscribe(
+          { contactEditPublisher.onNext(contact) },
+          { err ->
+            Timber.e(err)
+          }
+      )
+      RxView.clicks(itemView).subscribe(
+          { contactCallPublisher.onNext(contact) },
+          { err ->
+            Timber.e(err)
+          }
+      )
     }
 
-    private lateinit var user: User
+    private lateinit var contact: Contact
     private var isFavorite = false
 
     fun bind(callHistory: CallHistoryViewModel) {
-      this.user = callHistory.user
-      isFavorite = user.isFavorite
+      this.contact = callHistory.contact
+      isFavorite = contact.isFavorite
 
-      name.text = user.name
+      name.text = contact.name
       setFavoriteIcon()
 
-      if (user.thumbnailPath.isEmpty()) {
+      if (contact.thumbnailPath.isEmpty()) {
         image.visibility = View.GONE
       } else {
         val requestOptions = RequestOptions.circleCropTransform()
-        Glide.with(itemView).load(user.thumbnailPath).apply(requestOptions).into(image)
+        Glide.with(itemView).load(contact.thumbnailPath).apply(requestOptions).into(image)
       }
     }
 

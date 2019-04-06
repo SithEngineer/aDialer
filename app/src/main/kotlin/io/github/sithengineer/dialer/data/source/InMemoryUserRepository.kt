@@ -3,7 +3,7 @@ package io.github.sithengineer.dialer.data.source
 import io.github.sithengineer.dialer.data.UserRepository
 import io.github.sithengineer.dialer.data.model.CallHistory
 import io.github.sithengineer.dialer.data.model.ContactNumber
-import io.github.sithengineer.dialer.data.model.User
+import io.github.sithengineer.dialer.data.model.Contact
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -11,7 +11,7 @@ import java.util.TreeMap
 
 class InMemoryUserRepository : UserRepository {
 
-  private val userMap: TreeMap<String, User> = TreeMap(
+  private val contactMap: TreeMap<String, Contact> = TreeMap(
       Comparator { id1, id2 -> id1.compareTo(id2, ignoreCase = true) }
   )
 
@@ -21,33 +21,33 @@ class InMemoryUserRepository : UserRepository {
 
   private val userCallHistory: MutableList<CallHistory> = mutableListOf()
 
-  override fun getUsers(): Flowable<List<User>> = Flowable.just(
-      userMap.values.toList())
+  override fun getUsers(): Flowable<List<Contact>> = Flowable.just(
+      contactMap.values.toList())
 
-  override fun insertOrUpdateUsers(vararg user: User): Completable =
-      Completable.fromAction({
-        user.forEach {
-          userMap[it.id] = it
+  override fun insertOrUpdateUsers(vararg contact: Contact): Completable =
+      Completable.fromAction {
+        contact.forEach {
+          contactMap[it.id] = it
         }
-      })
+      }
 
   override fun insertOrUpdateContactNumbers(vararg contactNumber: ContactNumber): Completable =
-      Completable.fromAction({
+      Completable.fromAction {
         contactNumber.forEach {
           userContacts[it.id] = it
         }
-      })
+      }
 
-  override fun getContactsForUser(user: User): Flowable<List<ContactNumber>> =
+  override fun getContactsForUser(contact: Contact): Flowable<List<ContactNumber>> =
       Flowable
           .fromIterable(userContacts.values)
-          .filter { it.userId == user.id }
+          .filter { it.contactId == contact.id }
           .toList()
           .toFlowable()
 
-  override fun insertCallTo(user: User): Single<CallHistory> =
+  override fun insertCallTo(contact: Contact): Single<CallHistory> =
       Single
-          .just(CallHistory(toUserId = user.id))
+          .just(CallHistory(toUserId = contact.id))
           .doOnSuccess { userCallHistory.add(it) }
 
   override fun getCallHistories(): Flowable<List<CallHistory>> =

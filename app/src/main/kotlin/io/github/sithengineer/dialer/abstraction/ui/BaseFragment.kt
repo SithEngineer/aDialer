@@ -7,18 +7,18 @@ import dagger.android.support.DaggerAppCompatDialogFragment
 
 abstract class BaseFragment : DaggerAppCompatDialogFragment() {
 
-  private var viewUnbinder: Unbinder? = null
+  private var viewUnBinder: Unbinder? = null
 
   override fun onViewStateRestored(savedInstanceState: Bundle?) {
     // occurs before onResume
     super.onViewStateRestored(savedInstanceState)
     view?.let {
-      viewUnbinder = ButterKnife.bind(this, it)
+      viewUnBinder = ButterKnife.bind(this, it)
     }
   }
 
   override fun onDestroyView() {
-    viewUnbinder?.unbind()
+    viewUnBinder?.unbind()
     super.onDestroyView()
   }
 }

@@ -2,7 +2,7 @@ package io.github.sithengineer.dialer.usecase
 
 import io.github.sithengineer.dialer.abstraction.UseCase
 import io.github.sithengineer.dialer.data.UserRepository
-import io.github.sithengineer.dialer.data.model.User
+import io.github.sithengineer.dialer.data.model.Contact
 import io.github.sithengineer.dialer.usecase.filter.UserFilter
 import io.reactivex.Flowable
 import javax.inject.Inject
@@ -19,5 +19,5 @@ class GetUsers @Inject constructor(
 
   class Request : UseCase.RequestValues
 
-  class Response(val users: Flowable<List<User>>) : UseCase.ResponseValue
+  class Response(val users: Flowable<List<Contact>>) : UseCase.ResponseValue
 }
