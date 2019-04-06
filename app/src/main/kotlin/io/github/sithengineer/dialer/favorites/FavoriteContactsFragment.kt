@@ -13,6 +13,7 @@ import butterknife.BindView
 import io.github.sithengineer.dialer.R
 import io.github.sithengineer.dialer.abstraction.ui.BaseViewFragment
 import io.github.sithengineer.dialer.data.model.Contact
+import io.github.sithengineer.dialer.data.model.ContactNumber
 
 class FavoriteContactsFragment : BaseViewFragment<FavoriteContactsPresenter>(),
     FavoriteContactsView {
@@ -36,8 +37,9 @@ class FavoriteContactsFragment : BaseViewFragment<FavoriteContactsPresenter>(),
 
   override fun selectedCallUser() = adapter.userCallSelected()
 
-  override fun showUsers(contacts: List<Contact>) {
-    adapter.setUsers(contacts)
+  override fun showUsers(contacts: List<Contact>,
+      contactNumbers: Map<Contact, List<ContactNumber>>) {
+    adapter.setUsers(contacts, contactNumbers)
   }
 
   override fun removeUser(contact: Contact) {

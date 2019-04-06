@@ -8,10 +8,10 @@ import io.reactivex.Flowable
 import io.reactivex.Single
 
 interface UserRepository {
-  fun getUsers(): Flowable<List<Contact>>
+  fun getUsers(): Single<List<Contact>>
   fun insertOrUpdateUsers(vararg contact: Contact): Completable
   fun insertOrUpdateContactNumbers(vararg contactNumber: ContactNumber): Completable
-  fun getContactsForUser(contact: Contact): Flowable<List<ContactNumber>>
+  fun getContactsForUser(contact: Contact): Single<List<ContactNumber>>
   fun insertCallTo(contact: Contact): Single<CallHistory>
-  fun getCallHistories(): Flowable<List<CallHistory>>
+  fun getCallHistories(): Single<List<CallHistory>>
 }

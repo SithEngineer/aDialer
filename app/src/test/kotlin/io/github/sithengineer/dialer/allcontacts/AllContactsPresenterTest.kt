@@ -4,7 +4,7 @@ import io.github.sithengineer.dialer.DummyData
 import io.github.sithengineer.dialer.InitializedUserRepository
 import io.github.sithengineer.dialer.data.model.Contact
 import io.github.sithengineer.dialer.usecase.CallUser
-import io.github.sithengineer.dialer.usecase.GetUsers
+import io.github.sithengineer.dialer.usecase.GetContacts
 import io.github.sithengineer.dialer.usecase.ToggleFavoriteUser
 import io.github.sithengineer.dialer.usecase.filter.EmptyUserFilter
 import io.reactivex.disposables.CompositeDisposable
@@ -28,7 +28,7 @@ class AllContactsPresenterTest : Spek({
 
     val userRepository = spy(InitializedUserRepository())
 
-    val getUsers = spy(GetUsers(userRepository, EmptyUserFilter()))
+    val getUsers = spy(GetContacts(userRepository, EmptyUserFilter()))
     val toggleFavoriteUser = spy(ToggleFavoriteUser(userRepository))
     val callUser = spy(CallUser(userRepository))
 
@@ -38,7 +38,7 @@ class AllContactsPresenterTest : Spek({
 
     val presenter = AllContactsPresenterImpl(ioScheduler = ioScheduler,
         viewScheduler = viewScheduler, disposables = disposables, view = view, callUser = callUser,
-        toggleFavoriteUser = toggleFavoriteUser, getUsers = getUsers)
+        toggleFavoriteUser = toggleFavoriteUser, getContacts = getUsers)
 
     on("presenter resumed") {
       presenter.resume()

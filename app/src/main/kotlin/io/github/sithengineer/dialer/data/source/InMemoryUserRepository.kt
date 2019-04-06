@@ -21,7 +21,7 @@ class InMemoryUserRepository : UserRepository {
 
   private val userCallHistory: MutableList<CallHistory> = mutableListOf()
 
-  override fun getUsers(): Flowable<List<Contact>> = Flowable.just(
+  override fun getUsers(): Single<List<Contact>> = Single.just(
       contactMap.values.toList())
 
   override fun insertOrUpdateUsers(vararg contact: Contact): Completable =
@@ -38,18 +38,17 @@ class InMemoryUserRepository : UserRepository {
         }
       }
 
-  override fun getContactsForUser(contact: Contact): Flowable<List<ContactNumber>> =
+  override fun getContactsForUser(contact: Contact): Single<List<ContactNumber>> =
       Flowable
           .fromIterable(userContacts.values)
           .filter { it.contactId == contact.id }
           .toList()
-          .toFlowable()
 
   override fun insertCallTo(contact: Contact): Single<CallHistory> =
       Single
           .just(CallHistory(toUserId = contact.id))
           .doOnSuccess { userCallHistory.add(it) }
 
-  override fun getCallHistories(): Flowable<List<CallHistory>> =
-      Flowable.just(userCallHistory)
+  override fun getCallHistories(): Single<List<CallHistory>> =
+      Single.just(userCallHistory)
 }

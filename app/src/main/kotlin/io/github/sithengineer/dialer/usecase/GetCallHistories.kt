@@ -7,7 +7,7 @@ import io.github.sithengineer.dialer.data.model.Contact
 import io.github.sithengineer.dialer.usecase.GetCallHistories.Request
 import io.github.sithengineer.dialer.usecase.GetCallHistories.Response
 import io.github.sithengineer.dialer.viewmodel.CallHistoryViewModel
-import io.reactivex.Flowable
+import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import javax.inject.Inject
 
@@ -17,7 +17,7 @@ class GetCallHistories @Inject constructor(
 
   override fun execute(request: Request): Response {
     return Response(
-        Flowable.zip(
+        Single.zip(
             userRepository.getUsers(),
             userRepository.getCallHistories(),
             BiFunction<List<Contact>, List<CallHistory>, List<CallHistoryViewModel>>
@@ -42,5 +42,5 @@ class GetCallHistories @Inject constructor(
 
   class Request : UseCase.RequestValues
 
-  class Response(val callHistories: Flowable<List<CallHistoryViewModel>>) : UseCase.ResponseValue
+  class Response(val callHistories: Single<List<CallHistoryViewModel>>) : UseCase.ResponseValue
 }

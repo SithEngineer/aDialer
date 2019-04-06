@@ -8,7 +8,6 @@ import io.github.sithengineer.dialer.data.model.CallHistory
 import io.github.sithengineer.dialer.data.model.Contact
 import io.github.sithengineer.dialer.data.model.ContactNumber
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -18,7 +17,7 @@ class LocalUserRepository @Inject constructor(
     private val contactNumberDao: ContactNumberDao
 ) : UserRepository {
 
-  override fun getUsers(): Flowable<List<Contact>> = contactDao.getAll()
+  override fun getUsers(): Single<List<Contact>> = contactDao.getAll()
 
   override fun insertOrUpdateUsers(vararg contact: Contact): Completable = Completable.fromAction {
     contactDao.insertOrUpdate(*contact)
@@ -37,7 +36,7 @@ class LocalUserRepository @Inject constructor(
     contactNumberDao.insertOrUpdate(*contactNumber)
   }
 
-  override fun getContactsForUser(contact: Contact): Flowable<List<ContactNumber>> =
+  override fun getContactsForUser(contact: Contact): Single<List<ContactNumber>> =
       contactNumberDao.get(contact.id)
 
 }

@@ -5,8 +5,9 @@ import io.github.sithengineer.dialer.abstraction.dependencyinjection.components.
 import io.github.sithengineer.dialer.abstraction.dependencyinjection.scope.FragmentScope
 import io.github.sithengineer.dialer.abstraction.ui.BasePresenter
 import io.github.sithengineer.dialer.usecase.CallUser
-import io.github.sithengineer.dialer.usecase.GetUsers
-import io.github.sithengineer.dialer.usecase.GetUsers.Request
+import io.github.sithengineer.dialer.usecase.GetContactNumbers
+import io.github.sithengineer.dialer.usecase.GetContacts
+import io.github.sithengineer.dialer.usecase.GetContacts.Request
 import io.github.sithengineer.dialer.usecase.ToggleFavoriteUser
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
@@ -18,7 +19,8 @@ import javax.inject.Named
 class AllContactsPresenterImpl @Inject constructor(
     view: AllContactsView,
     private val disposables: CompositeDisposable,
-    private val getUsers: GetUsers,
+    private val getContacts: GetContacts,
+    private val getContactNumbers: GetContactNumbers,
     private val callUser: CallUser,
     private val toggleFavoriteUser: ToggleFavoriteUser,
     @Named(SchedulersModule.VIEW) private val viewScheduler: Scheduler,
@@ -91,16 +93,34 @@ class AllContactsPresenterImpl @Inject constructor(
   private fun loadContacts() {
     val request = Request()
     disposables.add(
-        getUsers
-            .execute(request)
+        getContacts
+            .execute(GetContacts.Request())
             .users
-            .firstElement()
+            .doOnSuccess { contacts ->
+              Timber.v("Showing all ${contacts.size} contacts")
+            }
+            .flattenAsObservable { contacts -> contacts }
+            .flatMapSingle { contact ->
+              getContactNumbers.execute(
+                  GetContactNumbers.Request(contact)).contactNumbers.map { contactNumbers ->
+                Pair(contact, contactNumbers)
+              }
+            }
+            .toList()
             .observeOn(viewScheduler)
             .subscribeOn(ioScheduler)
             .subscribe(
-                { users ->
-                  Timber.v("All contacts showing ${users.size} users")
-                  view.showUsers(users)
+                { contactAndNumbersPairsList ->
+
+                  val contacts = contactAndNumbersPairsList.map { (contact, _) -> contact }
+
+                  val contactNumbers = contactAndNumbersPairsList
+                      .map { (_, contactNumbers) -> contactNumbers }
+                      .flatten()
+                      .groupBy { contactNumbers -> contactNumbers.contactId }
+                      .mapKeys { entry -> contacts.first { contact -> contact.id == entry.key } }
+
+                  view.showUsers(contacts, contactNumbers)
                 },
                 { err ->
                   Timber.e(err)

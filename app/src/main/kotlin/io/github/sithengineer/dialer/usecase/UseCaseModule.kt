@@ -12,8 +12,12 @@ abstract class UseCaseModule {
   companion object {
     @Provides
     @JvmStatic
-    fun getUsers(userRepository: UserRepository, filter: UserFilter) = GetUsers(userRepository,
+    fun getContacts(userRepository: UserRepository, filter: UserFilter) = GetContacts(userRepository,
         filter)
+
+    @Provides
+    @JvmStatic
+    fun getContactNumbers(userRepository: UserRepository) = GetContactNumbers(userRepository)
 
     @Provides
     @JvmStatic
