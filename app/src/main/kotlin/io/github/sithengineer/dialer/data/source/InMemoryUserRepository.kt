@@ -2,8 +2,8 @@ package io.github.sithengineer.dialer.data.source
 
 import io.github.sithengineer.dialer.data.UserRepository
 import io.github.sithengineer.dialer.data.model.CallHistory
-import io.github.sithengineer.dialer.data.model.ContactNumber
 import io.github.sithengineer.dialer.data.model.Contact
+import io.github.sithengineer.dialer.data.model.ContactNumber
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single

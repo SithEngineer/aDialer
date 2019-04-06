@@ -1,7 +1,7 @@
 package io.github.sithengineer.dialer
 
-import io.github.sithengineer.dialer.data.model.ContactNumber
 import io.github.sithengineer.dialer.data.model.Contact
+import io.github.sithengineer.dialer.data.model.ContactNumber
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil.PhoneNumberType
 import java.util.concurrent.ThreadLocalRandom
 

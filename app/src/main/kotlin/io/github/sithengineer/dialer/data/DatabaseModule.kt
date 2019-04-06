@@ -6,8 +6,8 @@ import dagger.Module
 import dagger.Provides
 import io.github.sithengineer.dialer.abstraction.dependencyinjection.scope.ApplicationScope
 import io.github.sithengineer.dialer.data.dao.CallHistoryDao
-import io.github.sithengineer.dialer.data.dao.ContactNumberDao
 import io.github.sithengineer.dialer.data.dao.ContactDao
+import io.github.sithengineer.dialer.data.dao.ContactNumberDao
 import io.github.sithengineer.dialer.data.source.LocalUserRepository
 
 @Module

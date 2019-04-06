@@ -8,8 +8,8 @@ import android.support.v4.content.LocalBroadcastManager
 import dagger.android.DaggerIntentService
 import io.github.sithengineer.dialer.abstraction.ContactsLoadedReceiver
 import io.github.sithengineer.dialer.data.UserRepository
-import io.github.sithengineer.dialer.data.model.ContactNumber
 import io.github.sithengineer.dialer.data.model.Contact
+import io.github.sithengineer.dialer.data.model.ContactNumber
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import timber.log.Timber
 import java.util.Locale

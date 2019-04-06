@@ -29,7 +29,7 @@ class FavoriteContactsFragment : BaseViewFragment<FavoriteContactsPresenter>(),
     contacts.adapter = adapter
     contacts.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
   }
-  
+
   override fun selectedEditUser() = adapter.userEditSelected()
 
   override fun selectedToggleFavoriteUser() = adapter.userFavoriteSelected()
