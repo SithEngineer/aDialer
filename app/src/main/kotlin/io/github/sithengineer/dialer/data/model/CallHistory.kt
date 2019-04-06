@@ -8,6 +8,6 @@ import java.util.UUID
 @Entity(tableName = "call_history")
 data class CallHistory(
     @PrimaryKey @ColumnInfo(name = "callId") var id: String = UUID.randomUUID().toString(),
-    @ColumnInfo(name = "toUserId") var toUserId: String,
+    @ColumnInfo(name = "toContactId") var toContactId: String,
     @ColumnInfo(name = "timestamp") var timestamp: Long = System.currentTimeMillis()
 )

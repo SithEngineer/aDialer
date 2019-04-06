@@ -84,26 +84,10 @@
         />
 
     <TextView
-        android:id="@+id/list_item_history_contact_number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/list_item_history_contact_name"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_toEndOf="@+id/list_item_history_contact_image"
-        android:layout_toStartOf="@+id/list_item_history_contact_buttons"
-        android:lines="1"
-        android:maxLines="1"
-        android:text="00 123 456 789"
-        tools:text="00 123 456 789"
-        />
-
-    <TextView
         android:id="@+id/list_item_history_contact_last_call"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/list_item_history_contact_number"
+        android:layout_below="@+id/list_item_history_contact_name"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
