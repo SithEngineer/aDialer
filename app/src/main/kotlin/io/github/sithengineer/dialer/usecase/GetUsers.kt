@@ -14,7 +14,7 @@ class GetUsers @Inject constructor(
 
   override fun execute(request: Request): Response {
     val rxResponse = userRepository.getUsers()
-    return Response(rxResponse.map { it -> userFilter.filter(it) })
+    return Response(rxResponse.map { userFilter.filter(it) })
   }
 
   class Request : UseCase.RequestValues

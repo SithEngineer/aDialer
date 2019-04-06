@@ -33,14 +33,14 @@ class GetCallHistories @Inject constructor(
     callHistories.forEach { entry ->
       callHistoriesViewModel.add(
           CallHistoryViewModel(
-              contacts.first { it -> it.id == entry.toUserId }, entry)
+              contacts.first { it.id == entry.toUserId }, entry)
       )
     }
 
     return callHistoriesViewModel
   }
 
-  class Request() : UseCase.RequestValues
+  class Request : UseCase.RequestValues
 
   class Response(val callHistories: Flowable<List<CallHistoryViewModel>>) : UseCase.ResponseValue
 }

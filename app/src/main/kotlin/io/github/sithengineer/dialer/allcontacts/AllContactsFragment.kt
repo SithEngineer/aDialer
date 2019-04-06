@@ -4,19 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.ContactsContract.Contacts
 import android.support.design.widget.Snackbar
-import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import butterknife.BindView
 import io.github.sithengineer.dialer.R
-import io.github.sithengineer.dialer.R.dimen
 import io.github.sithengineer.dialer.abstraction.ui.BaseViewFragment
 import io.github.sithengineer.dialer.data.model.Contact
-import io.github.sithengineer.dialer.util.ScreenMath
-import javax.inject.Inject
 
 class AllContactsFragment : BaseViewFragment<AllContactsPresenter>(), AllContactsView {
 
@@ -24,9 +20,6 @@ class AllContactsFragment : BaseViewFragment<AllContactsPresenter>(), AllContact
   lateinit var contacts: RecyclerView
 
   private lateinit var adapter: AllContactsAdapter
-
-  @Inject
-  lateinit var screenMath: ScreenMath
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
@@ -38,15 +31,7 @@ class AllContactsFragment : BaseViewFragment<AllContactsPresenter>(), AllContact
 
     adapter = AllContactsAdapter()
     contacts.adapter = adapter
-    val columns = getNumberOfColumns()
-    contacts.layoutManager = StaggeredGridLayoutManager(columns, GridLayoutManager.VERTICAL)
-  }
-
-  private fun getNumberOfColumns(): Int {
-    val buttonsAreaWidth = 30
-    val totalItemWidth = resources.getDimensionPixelSize(
-        dimen.list_item_square_contact_size) + buttonsAreaWidth
-    return screenMath.calculateNoOfColumns(context!!, totalItemWidth)
+    contacts.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
   }
 
   override fun selectedEditUser() = adapter.userEditSelected()

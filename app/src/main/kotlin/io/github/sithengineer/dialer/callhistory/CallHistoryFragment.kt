@@ -27,7 +27,7 @@ class CallHistoryFragment : BaseViewFragment<CallHistoryPresenter>(),
 
     adapter = CallHistoryAdapter()
     callHistories.adapter = adapter
-    callHistories.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+    callHistories.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
   }
 
   override fun selectedEditUser() = adapter.userEditSelected()

@@ -15,7 +15,6 @@ import io.github.sithengineer.dialer.background.ContactSyncServiceProvider
 import io.github.sithengineer.dialer.data.DatabaseModule
 import io.github.sithengineer.dialer.home.HomeActivity
 import io.github.sithengineer.dialer.home.HomeActivityModule
-import io.github.sithengineer.dialer.util.ScreenMath
 import io.reactivex.disposables.CompositeDisposable
 
 @Module(includes = [
@@ -38,10 +37,6 @@ abstract class AppModule {
     @Provides
     @JvmStatic
     fun provideCompositeDisposable() = CompositeDisposable()
-
-    @Provides
-    @JvmStatic
-    fun provideScreenMath() = ScreenMath()
   }
 
   @Binds
